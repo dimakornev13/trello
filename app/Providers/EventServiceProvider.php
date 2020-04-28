@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\Events\ColumnCreated;
+use App\Events\ColumnDeleted;
 use App\Events\DashboardCreated;
 use App\Events\DashboardDeleted;
+use App\Listeners\AddHistoryAfterColumnCreated;
 use App\Listeners\DeleteAllConnectedToDeletedDashboard;
+use App\Listeners\DeleteEveryThingConnectedToColumn;
 use App\Listeners\UserAttachCreatedDashboard;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,6 +27,14 @@ class EventServiceProvider extends ServiceProvider
 
         DashboardDeleted::class => [
             DeleteAllConnectedToDeletedDashboard::class
+        ],
+
+        ColumnCreated::class => [
+            AddHistoryAfterColumnCreated::class
+        ],
+
+        ColumnDeleted::class => [
+            DeleteEveryThingConnectedToColumn::class
         ]
     ];
 

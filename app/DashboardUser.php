@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class DashboardUser extends Pivot
 {
+
     /**
      * The attributes that are mass assignable.
      *
@@ -24,4 +25,20 @@ class DashboardUser extends Pivot
     protected $casts = [
         'id' => 'integer',
     ];
+
+
+    /**
+     * check if an user is a member of a dashboard
+     *
+     * @param int $userID
+     * @param int $dashboardID
+     *
+     * @return bool
+     */
+    public static function isMember(int $userID, int $dashboardID): bool
+    {
+        return static::where('user_id', $userID)
+            ->where('dashboard_id', $dashboardID)
+            ->exists();
+    }
 }

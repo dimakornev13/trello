@@ -2,7 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Column;
+use App\Dashboard;
+use App\DashboardUser;
 use App\User;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -10,7 +14,6 @@ use Tests\TestCase;
 
 class ColumnTest extends TestCase
 {
-
 
     use DatabaseMigrations;
 
@@ -26,14 +29,131 @@ class ColumnTest extends TestCase
         $this->user = User::find(2);
     }
 
+
     /**
-     * A basic feature test example.
-     *
      * @return void
      */
-    public function test()
+    public function testCreateSuccessfulColumnInDashboard()
     {
-        //$response = $this->actingAs($this->user, 'api')
-        //    ->post
+        //$this->withoutExceptionHandling();
+
+        $data = [
+            'title'        => 'some title',
+            'dashboard_id' => Dashboard::where('owner_id', $this->user->id)->first()->id
+        ];
+
+        $response = $this->actingAs($this->user, 'api')
+            ->postJson(route('columns.store'), $data);
+
+        $response
+            ->assertCreated()
+            ->assertSee($data['title']);
+    }
+
+
+    /**
+     * @return void
+     */
+    public function testUserCanNotCreateNewColumn()
+    {
+        $data = [
+            'title'        => 'some title',
+            'dashboard_id' => 2
+        ];
+
+        $response = $this->actingAs($this->user, 'api')
+            ->postJson(route('columns.store'), $data);
+
+        $response->assertForbidden();
+    }
+
+
+    /**
+     * @return void
+     */
+    public function testUserCanUpdateNewColumn()
+    {
+        $column = Column::whereIn('dashboard_id', function ($query) {
+            return $this->getDashboardIDForUser($query);
+        })->first();
+
+        $data = [
+            'title'        => 'some title',
+            'dashboard_id' => $column->dashboard_id,
+            'sort'         => 11
+        ];
+
+        $response = $this->actingAs($this->user, 'api')
+            ->putJson(route('columns.update', ['column' => $column->dashboard_id]), $data);
+
+        $response
+            ->assertStatus(200)
+            ->assertSee($data['title']);
+    }
+
+
+    /**
+     * @return void
+     */
+    public function testUserCanNotUpdateNewColumn()
+    {
+        $column = Column::whereNotIn('dashboard_id', function ($query) {
+            return $this->getDashboardIDForUser($query);
+        })->first();
+
+        $data = [
+            'title'        => 'some title',
+            'dashboard_id' => $column->id,
+            'sort'         => 11
+        ];
+
+        $response = $this->actingAs($this->user, 'api')
+            ->putJson(route('columns.update', ['column' => $column->id]), $data);
+
+        $response->assertForbidden();
+    }
+
+
+    public function testUserCanDeleteColumn()
+    {
+        $this->withoutExceptionHandling();
+
+        $dashboard = Dashboard::where('owner_id', $this->user->id)->first();
+        $column = Column::where('dashboard_id', $dashboard->id)->first();
+
+
+        $response = $this->actingAs($this->user, 'api')
+            ->deleteJson(route('columns.destroy', compact('column')));
+
+        $response->assertStatus(200);
+    }
+
+
+    /**
+     * @return void
+     */
+    public function testUserCanNotDeleteColumn()
+    {
+        $column = Column::whereNotIn('dashboard_id', function ($query) {
+            return $this->getDashboardIDForUser($query);
+        })->first();
+
+        $response = $this->actingAs($this->user, 'api')
+            ->deleteJson(route('columns.destroy', ['column' => $column->id]));
+
+        $response->assertForbidden();
+    }
+
+
+    /**
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    private function getDashboardIDForUser(Builder $query): Builder
+    {
+        return $query->select('dashboard_id')
+            ->from((new DashboardUser)->getTable())
+            ->where('user_id', $this->user->id);
     }
 }

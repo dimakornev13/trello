@@ -153,14 +153,14 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="630" y="1310" width="651" height="591" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1588085145829">
+    <state x="630" y="1310" width="651" height="591" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1588087387484">
       <screen x="0" y="1080" width="1920" height="1080" />
     </state>
-    <state x="630" y="1310" width="651" height="591" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.1080.1920.1080/0.0.1920.1080@0.1080.1920.1080" timestamp="1588085145829" />
-    <state x="652" y="1389" width="608" height="433" key="NewPhpClassDialog" timestamp="1588066522077">
+    <state x="630" y="1310" width="651" height="591" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.1080.1920.1080/0.0.1920.1080@0.1080.1920.1080" timestamp="1588087387484" />
+    <state x="652" y="1389" width="608" height="433" key="NewPhpClassDialog" timestamp="1588086639099">
       <screen x="0" y="1080" width="1920" height="1080" />
     </state>
-    <state x="652" y="1389" width="608" height="433" key="NewPhpClassDialog/0.1080.1920.1080/0.0.1920.1080@0.1080.1920.1080" timestamp="1588066522077" />
+    <state x="652" y="1389" width="608" height="433" key="NewPhpClassDialog/0.1080.1920.1080/0.0.1920.1080@0.1080.1920.1080" timestamp="1588086639099" />
     <state x="620" y="1280" width="714" height="655" key="StructurePopup" timestamp="1588086063195">
       <screen x="0" y="1080" width="1920" height="1080" />
     </state>
@@ -169,9 +169,9 @@
       <screen x="0" y="1080" width="1920" height="1080" />
     </state>
     <state x="563" y="1136" width="785" height="938" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.1080.1920.1080/0.0.1920.1080@0.1080.1920.1080" timestamp="1588073518567" />
-    <state x="539" y="1125" width="840" height="1034" key="search.everywhere.popup" timestamp="1588086193296">
+    <state x="539" y="1125" width="840" height="1034" key="search.everywhere.popup" timestamp="1588093301301">
       <screen x="0" y="1080" width="1920" height="1080" />
     </state>
-    <state x="539" y="1125" width="840" height="1034" key="search.everywhere.popup/0.1080.1920.1080/0.0.1920.1080@0.1080.1920.1080" timestamp="1588086193296" />
+    <state x="539" y="1125" width="840" height="1034" key="search.everywhere.popup/0.1080.1920.1080/0.0.1920.1080@0.1080.1920.1080" timestamp="1588093301301" />
   </component>
 </project>

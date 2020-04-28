@@ -18,5 +18,6 @@ use \App\Http\Controllers;
 Route::middleware('auth:api')->group(function (){
     Route::resources([
         'dashboards' => DashboardController::class,
+        'columns' => ColumnController::class,
     ]);
 });
