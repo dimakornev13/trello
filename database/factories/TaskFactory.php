@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Task::class, function (Faker $faker) {
     return [
-        'column_id' => $faker->word,
+        'column_id' => $faker->randomNumber(),
         'title' => $faker->sentence(4),
         'description' => $faker->text,
         'archived' => $faker->boolean,

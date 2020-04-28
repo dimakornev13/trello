@@ -42,6 +42,6 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function dashboards(){
-        return $this->belongsToMany(Dashboard::class);
+        return $this->belongsToMany(Dashboard::class)->using(DashboardUser::class);
     }
 }

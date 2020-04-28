@@ -2,13 +2,12 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Column;
+use App\DashboardUser;
 use Faker\Generator as Faker;
 
-$factory->define(Column::class, function (Faker $faker) {
+$factory->define(DashboardUser::class, function (Faker $faker) {
     return [
+        'user_id' => $faker->randomNumber(),
         'dashboard_id' => $faker->randomNumber(),
-        'title' => $faker->sentence(4),
-        'sort' => $faker->randomNumber(),
     ];
 });

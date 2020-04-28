@@ -1,16 +1,16 @@
 models:
   Dashboard:
     title: string:255
-    owner_id: id.user
+    owner_id: integer
     background: string
 
   Column:
-    dashboard_id: id.dashboard
+    dashboard_id: integer
     title: string:255
     sort: integer
 
   Task:
-    column_id: id.column
+    column_id: integer
     title: string:255
     description: text
     archived: boolean
@@ -18,10 +18,14 @@ models:
 
   History:
     content: text
-    dashboard_id: id.dashboard
-    task_id: id.task
+    dashboard_id: integer
+    task_id: integer
 
   Comment:
     content: text
-    owner_id: id.user
-    task_id: id.task
+    owner_id: integer
+    task_id: integer
+
+  DashboardUser:
+    user_id: integer
+    dashboard_id: integer

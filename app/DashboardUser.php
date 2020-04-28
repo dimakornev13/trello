@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Dashboard extends Model
+class DashboardUser extends Pivot
 {
     /**
      * The attributes that are mass assignable.
@@ -12,9 +12,8 @@ class Dashboard extends Model
      * @var array
      */
     protected $fillable = [
-        'title',
-        'owner_id',
-        'background',
+        'user_id',
+        'dashboard_id',
     ];
 
     /**
@@ -24,6 +23,5 @@ class Dashboard extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'owner_id' => 'integer'
     ];
 }

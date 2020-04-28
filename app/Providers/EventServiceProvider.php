@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Auth\Events\Registered;
+use App\Events\DashboardCreated;
+use App\Events\DashboardDeleted;
+use App\Listeners\DeleteAllConnectedToDeletedDashboard;
+use App\Listeners\UserAttachCreatedDashboard;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -15,9 +17,13 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+        DashboardCreated::class => [
+            UserAttachCreatedDashboard::class
         ],
+
+        DashboardDeleted::class => [
+            DeleteAllConnectedToDeletedDashboard::class
+        ]
     ];
 
     /**

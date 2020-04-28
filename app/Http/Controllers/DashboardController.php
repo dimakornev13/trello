@@ -3,10 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Dashboard;
+use App\Http\Requests\StoreAndUpdateDashboard;
+use App\Repositories\DashboardRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Dashboard::class, 'dashboard');
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -21,46 +31,54 @@ class DashboardController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return mixed
      */
-    public function store(Request $request)
+    public function store(StoreAndUpdateDashboard $request, DashboardRepository $repository)
     {
-        //
+        $data = $request->validated();
+        $data['owner_id'] = auth()->user()->id;
+
+        return $repository->store($data);
     }
+
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Dashboard  $dashboard
-     * @return \Illuminate\Http\Response
+     * @param \App\Dashboard $dashboard
+     *
+     * @return Dashboard
      */
     public function show(Dashboard $dashboard)
     {
-        //
+        return $dashboard;
     }
 
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Dashboard  $dashboard
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Dashboard $dashboard
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Dashboard $dashboard)
+    public function update(StoreAndUpdateDashboard $request, Dashboard $dashboard, DashboardRepository $repository)
     {
-        //
+        return $repository->update($dashboard, $request->validated());
     }
+
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Dashboard  $dashboard
-     * @return \Illuminate\Http\Response
+     * @param \App\Dashboard $dashboard
+     *
      */
-    public function destroy(Dashboard $dashboard)
+    public function destroy(Dashboard $dashboard, DashboardRepository $repository): void
     {
-        //
+        $repository->delete($dashboard);
     }
 }
