@@ -24,6 +24,5 @@ class Dashboard extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'owner_id' => 'integer'
     ];
 }

@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers;
 
@@ -19,5 +18,6 @@ Route::middleware('auth:api')->group(function (){
     Route::resources([
         'dashboards' => DashboardController::class,
         'columns' => ColumnController::class,
+        'tasks' => TaskController::class,
     ]);
 });

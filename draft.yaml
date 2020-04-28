@@ -1,4 +1,8 @@
 models:
+  DashboardUser:
+    user_id: integer
+    dashboard_id: integer
+
   Dashboard:
     title: string:255
     owner_id: integer
@@ -11,6 +15,7 @@ models:
 
   Task:
     column_id: integer
+    dashboard_id: integer
     title: string:255
     description: text
     archived: boolean
@@ -25,7 +30,4 @@ models:
     content: text
     owner_id: integer
     task_id: integer
-
-  DashboardUser:
-    user_id: integer
     dashboard_id: integer

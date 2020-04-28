@@ -13,6 +13,7 @@ class Task extends Model
      */
     protected $fillable = [
         'column_id',
+        'dashboard_id',
         'title',
         'description',
         'archived',
@@ -26,6 +27,8 @@ class Task extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'dashboard_id' => 'integer',
+        'column_id' => 'integer',
         'archived' => 'boolean',
     ];
 }

@@ -18,6 +18,7 @@ class CreateCommentsTable extends Migration
             $table->text('content');
             $table->integer('owner_id');
             $table->integer('task_id');
+            $table->integer('dashboard_id');
             $table->timestamps();
         });
     }

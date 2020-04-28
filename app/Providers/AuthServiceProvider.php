@@ -6,8 +6,9 @@ use App\Column;
 use App\Dashboard;
 use App\Policies\ColumnPolicy;
 use App\Policies\DashboardPolicy;
+use App\Policies\TaskPolicy;
+use App\Task;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -18,7 +19,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Dashboard::class => DashboardPolicy::class,
-        Column::class => ColumnPolicy::class
+        Column::class => ColumnPolicy::class,
+        Task::class => TaskPolicy::class,
     ];
 
     /**

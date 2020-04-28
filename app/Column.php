@@ -24,5 +24,6 @@ class Column extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'dashboard_id' => 'integer',
     ];
 }

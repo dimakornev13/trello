@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
-use App\Column;
 use App\DashboardUser;
+use App\Task;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ColumnPolicy
+class TaskPolicy
 {
 
     use HandlesAuthorization;
@@ -30,13 +30,13 @@ class ColumnPolicy
      * Determine whether the user can view the model.
      *
      * @param \App\User $user
-     * @param \App\Column $column
+     * @param \App\Task $task
      *
      * @return mixed
      */
-    public function view(User $user, Column $column)
+    public function view(User $user, Task $task)
     {
-        //
+        return DashboardUser::isMember($user->id, $task->dashboard_id);
     }
 
 
@@ -57,13 +57,13 @@ class ColumnPolicy
      * Determine whether the user can update the model.
      *
      * @param \App\User $user
-     * @param \App\Column $column
+     * @param \App\Task $task
      *
      * @return mixed
      */
-    public function update(User $user, Column $column)
+    public function update(User $user, Task $task)
     {
-        return DashboardUser::isMember($user->id, $column->dashboard_id);
+        return DashboardUser::isMember($user->id, $task->dashboard_id);
     }
 
 
@@ -71,13 +71,13 @@ class ColumnPolicy
      * Determine whether the user can delete the model.
      *
      * @param \App\User $user
-     * @param \App\Column $column
+     * @param \App\Task $task
      *
      * @return mixed
      */
-    public function delete(User $user, Column $column)
+    public function delete(User $user, Task $task)
     {
-        return DashboardUser::isMember($user->id, $column->dashboard_id);
+        return DashboardUser::isMember($user->id, $task->dashboard_id);
     }
 
 
@@ -85,13 +85,13 @@ class ColumnPolicy
      * Determine whether the user can restore the model.
      *
      * @param \App\User $user
-     * @param \App\Column $column
+     * @param \App\Task $task
      *
      * @return mixed
      */
-    public function restore(User $user, Column $column)
+    public function restore(User $user, Task $task)
     {
-        //
+        return DashboardUser::isMember($user->id, $task->dashboard_id);
     }
 
 
@@ -99,12 +99,12 @@ class ColumnPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param \App\User $user
-     * @param \App\Column $column
+     * @param \App\Task $task
      *
      * @return mixed
      */
-    public function forceDelete(User $user, Column $column)
+    public function forceDelete(User $user, Task $task)
     {
-        //
+        return DashboardUser::isMember($user->id, $task->dashboard_id);
     }
 }

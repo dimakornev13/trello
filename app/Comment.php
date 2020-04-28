@@ -15,6 +15,7 @@ class Comment extends Model
         'content',
         'owner_id',
         'task_id',
+        'dashboard_id',
     ];
 
     /**

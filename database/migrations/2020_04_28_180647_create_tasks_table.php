@@ -16,6 +16,7 @@ class CreateTasksTable extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->integer('column_id');
+            $table->integer('dashboard_id');
             $table->string('title', 255);
             $table->text('description');
             $table->boolean('archived');

@@ -6,7 +6,9 @@ use App\Events\ColumnCreated;
 use App\Events\ColumnDeleted;
 use App\Events\DashboardCreated;
 use App\Events\DashboardDeleted;
+use App\Events\TaskCreated;
 use App\Listeners\AddHistoryAfterColumnCreated;
+use App\Listeners\AddHistoryAfterTaskCreated;
 use App\Listeners\DeleteAllConnectedToDeletedDashboard;
 use App\Listeners\DeleteEveryThingConnectedToColumn;
 use App\Listeners\UserAttachCreatedDashboard;
@@ -35,6 +37,10 @@ class EventServiceProvider extends ServiceProvider
 
         ColumnDeleted::class => [
             DeleteEveryThingConnectedToColumn::class
+        ],
+
+        TaskCreated::class => [
+            AddHistoryAfterTaskCreated::class
         ]
     ];
 

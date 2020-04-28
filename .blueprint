@@ -1,26 +1,26 @@
 created:
-    - database/migrations/2020_04_28_105726_create_dashboards_table.php
-    - database/migrations/2020_04_28_105727_create_columns_table.php
-    - database/migrations/2020_04_28_105728_create_tasks_table.php
-    - database/migrations/2020_04_28_105729_create_histories_table.php
-    - database/migrations/2020_04_28_105730_create_comments_table.php
-    - database/migrations/2020_04_28_105731_create_dashboard_users_table.php
+    - database/migrations/2020_04_28_180644_create_dashboard_users_table.php
+    - database/migrations/2020_04_28_180645_create_dashboards_table.php
+    - database/migrations/2020_04_28_180646_create_columns_table.php
+    - database/migrations/2020_04_28_180647_create_tasks_table.php
+    - database/migrations/2020_04_28_180648_create_histories_table.php
+    - database/migrations/2020_04_28_180649_create_comments_table.php
+    - app/DashboardUser.php
     - app/Dashboard.php
     - app/Column.php
     - app/Task.php
     - app/History.php
     - app/Comment.php
-    - app/DashboardUser.php
+    - database/factories/DashboardUserFactory.php
     - database/factories/DashboardFactory.php
     - database/factories/ColumnFactory.php
     - database/factories/TaskFactory.php
     - database/factories/HistoryFactory.php
     - database/factories/CommentFactory.php
-    - database/factories/DashboardUserFactory.php
 models:
     Dashboard: { title: 'string:255', owner_id: integer, background: string }
     Column: { dashboard_id: integer, title: 'string:255', sort: integer }
-    Task: { column_id: integer, title: 'string:255', description: text, archived: boolean, sort: integer }
+    Task: { column_id: integer, dashboard_id: integer, title: 'string:255', description: text, archived: boolean, sort: integer }
     History: { content: text, dashboard_id: integer, task_id: integer }
-    Comment: { content: text, owner_id: integer, task_id: integer }
+    Comment: { content: text, owner_id: integer, task_id: integer, dashboard_id: integer }
     DashboardUser: { user_id: integer, dashboard_id: integer }
