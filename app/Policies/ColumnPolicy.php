@@ -52,6 +52,18 @@ class ColumnPolicy
         return DashboardUser::isMember($user->id, request('dashboard_id', 0));
     }
 
+    /**
+     * Determine whether the user can sort models.
+     *
+     * @param \App\User $user
+     *
+     * @return mixed
+     */
+    public function sort(User $user)
+    {
+        return DashboardUser::isMember($user->id, request('dashboard_id', 0));
+    }
+
 
     /**
      * Determine whether the user can update the model.

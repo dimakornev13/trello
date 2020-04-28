@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Column;
+use App\Http\Requests\ColumnSort;
 use App\Http\Requests\StoreAndUpdateColumn;
 use App\Repositories\ColumnRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ColumnController extends Controller
 {
@@ -56,5 +58,16 @@ class ColumnController extends Controller
     public function destroy(Column $column, ColumnRepository $repository): void
     {
         $repository->delete($column);
+    }
+
+
+    /**
+     * @param ColumnSort $request
+     * @param ColumnRepository $repository
+     */
+    public function sort(ColumnSort $request, ColumnRepository $repository){
+        Gate::authorize('sort', Column::class);
+
+        $repository->sort($request->validated());
     }
 }

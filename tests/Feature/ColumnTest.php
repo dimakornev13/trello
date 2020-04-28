@@ -35,8 +35,6 @@ class ColumnTest extends TestCase
      */
     public function testCreateSuccessfulColumnInDashboard()
     {
-        //$this->withoutExceptionHandling();
-
         $data = [
             'title'        => 'some title',
             'dashboard_id' => Dashboard::where('owner_id', $this->user->id)->first()->id
@@ -116,8 +114,6 @@ class ColumnTest extends TestCase
 
     public function testUserCanDeleteColumn()
     {
-        $this->withoutExceptionHandling();
-
         $dashboard = Dashboard::where('owner_id', $this->user->id)->first();
         $column = Column::where('dashboard_id', $dashboard->id)->first();
 
@@ -142,6 +138,31 @@ class ColumnTest extends TestCase
             ->deleteJson(route('columns.destroy', ['column' => $column->id]));
 
         $response->assertForbidden();
+    }
+
+
+    public function testUpdateSortOfColumns()
+    {
+        //$this->withoutExceptionHandling();
+
+        $dashboard = Dashboard::where('owner_id', $this->user->id)->first();
+        $columns = Column::where('dashboard_id', $dashboard->id)
+            ->get()
+            ->pluck('id');
+
+        $response = $this->actingAs($this->user, 'api')
+            ->putJson(route('columns.sort'), [
+                'dashboard_id' => $dashboard->id,
+                'set'          => $columns
+            ]);
+
+        collect($columns)->each(function ($id, $index) {
+            $column = Column::find($id);
+
+            $this->assertEquals($index, $column->sort);
+        });
+
+        $response->assertStatus(200);
     }
 
 

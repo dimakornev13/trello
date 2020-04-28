@@ -56,4 +56,24 @@ class ColumnRepository
 
         event(new ColumnDeleted($column));
     }
+
+
+    /**
+     * update sort field for columns from one dashboard just
+     *
+     * @param array $set
+     */
+    public function sort(array $set)
+    {
+        Column::whereIn('id', $set['set'])
+            ->where('dashboard_id', $set['dashboard_id'])
+            ->get()
+            ->each(function ($column) use ($set) {
+                if (!in_array($column->id, $set['set']))
+                    return true;
+
+                $column->sort = array_search($column->id, $set['set']);
+                $column->save();
+            });
+    }
 }
