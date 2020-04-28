@@ -1,0 +1,27 @@
+models:
+  Dashboard:
+    title: string:255
+    owner_id: id.user
+    background: string
+
+  Column:
+    dashboard_id: id.dashboard
+    title: string:255
+    sort: integer
+
+  Task:
+    column_id: id.column
+    title: string:255
+    description: text
+    archived: boolean
+    sort: integer
+
+  History:
+    content: text
+    dashboard_id: id.dashboard
+    task_id: id.task
+
+  Comment:
+    content: text
+    owner_id: id.user
+    task_id: id.task

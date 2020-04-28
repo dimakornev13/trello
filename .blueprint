@@ -1,0 +1,22 @@
+created:
+    - database/migrations/2020_04_28_090813_create_dashboards_table.php
+    - database/migrations/2020_04_28_090814_create_columns_table.php
+    - database/migrations/2020_04_28_090815_create_tasks_table.php
+    - database/migrations/2020_04_28_090816_create_histories_table.php
+    - database/migrations/2020_04_28_090817_create_comments_table.php
+    - app/Dashboard.php
+    - app/Column.php
+    - app/Task.php
+    - app/History.php
+    - app/Comment.php
+    - database/factories/DashboardFactory.php
+    - database/factories/ColumnFactory.php
+    - database/factories/TaskFactory.php
+    - database/factories/HistoryFactory.php
+    - database/factories/CommentFactory.php
+models:
+    Dashboard: { title: 'string:255', owner_id: id.user, background: string }
+    Column: { dashboard_id: id.dashboard, title: 'string:255', sort: integer }
+    Task: { column_id: id.column, title: 'string:255', description: text, archived: boolean, sort: integer }
+    History: { content: text, dashboard_id: id.dashboard, task_id: id.task }
+    Comment: { content: text, owner_id: id.user, task_id: id.task }
