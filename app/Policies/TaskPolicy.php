@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Column;
 use App\DashboardUser;
 use App\Task;
 use App\User;
@@ -68,6 +69,20 @@ class TaskPolicy
 
 
     /**
+     * Determine whether the user can sort the model.
+     *
+     * @param \App\User $user
+     * @param Column $column
+     *
+     * @return mixed
+     */
+    public function sort(User $user, Column $column)
+    {
+        return DashboardUser::isMember($user->id, $column->dashboard_id);
+    }
+
+
+    /**
      * Determine whether the user can delete the model.
      *
      * @param \App\User $user
@@ -106,5 +121,22 @@ class TaskPolicy
     public function forceDelete(User $user, Task $task)
     {
         return DashboardUser::isMember($user->id, $task->dashboard_id);
+    }
+
+
+    /**
+     * Determine whether the user can permanently move the model.
+     * Check that actions occurs in the same dashboard
+     *
+     * @param \App\User $user
+     * @param Column $newColumn
+     * @param \App\Task $task
+     *
+     * @return mixed
+     */
+    public function move(User $user, Column $newColumn, Task $task)
+    {
+        return $task->dashboard_id === $newColumn->dashboard_id
+            && DashboardUser::isMember($user->id, $task->dashboard_id);
     }
 }

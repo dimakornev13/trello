@@ -26,9 +26,8 @@ class ColumnSort extends FormRequest
     public function rules()
     {
         return [
-            'dashboard_id' => 'required|integer',
-            'set'       => 'required|array',
-            'set.*'     => 'integer',
+            'set'          => 'required|array',
+            'set.*'        => 'integer',
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Column;
+use App\Dashboard;
 use App\Http\Requests\ColumnSort;
 use App\Http\Requests\StoreAndUpdateColumn;
 use App\Repositories\ColumnRepository;
@@ -63,11 +64,12 @@ class ColumnController extends Controller
 
     /**
      * @param ColumnSort $request
+     * @param Dashboard $dashboard
      * @param ColumnRepository $repository
      */
-    public function sort(ColumnSort $request, ColumnRepository $repository){
-        Gate::authorize('sort', Column::class);
+    public function sort(ColumnSort $request, Dashboard $dashboard, ColumnRepository $repository){
+        Gate::authorize('sort', [Column::class, $dashboard]);
 
-        $repository->sort($request->validated());
+        $repository->sort($dashboard, $request->validated());
     }
 }

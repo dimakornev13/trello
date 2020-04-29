@@ -2,7 +2,7 @@
 /public
 /storage
 /vendor
-/.idea
+.idea
 .env
 .env.backup
 .phpunit.result.cache

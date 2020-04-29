@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Column;
+use App\Dashboard;
 use App\DashboardUser;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -52,16 +53,19 @@ class ColumnPolicy
         return DashboardUser::isMember($user->id, request('dashboard_id', 0));
     }
 
+
     /**
      * Determine whether the user can sort models.
      *
      * @param \App\User $user
      *
+     * @param Dashboard $dashboard
+     *
      * @return mixed
      */
-    public function sort(User $user)
+    public function sort(User $user, Dashboard $dashboard)
     {
-        return DashboardUser::isMember($user->id, request('dashboard_id', 0));
+        return DashboardUser::isMember($user->id, $dashboard->id);
     }
 
 

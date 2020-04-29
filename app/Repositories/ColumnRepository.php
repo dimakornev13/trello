@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 
 use App\Column;
+use App\Dashboard;
 use App\Events\ColumnCreated;
 use App\Events\ColumnDeleted;
 
@@ -61,12 +62,12 @@ class ColumnRepository
     /**
      * update sort field for columns from one dashboard just
      *
+     * @param Dashboard $dashboard
      * @param array $set
      */
-    public function sort(array $set)
+    public function sort(Dashboard $dashboard, array $set)
     {
-        Column::whereIn('id', $set['set'])
-            ->where('dashboard_id', $set['dashboard_id'])
+        Column::where('dashboard_id', $dashboard->id)
             ->get()
             ->each(function ($column) use ($set) {
                 if (!in_array($column->id, $set['set']))

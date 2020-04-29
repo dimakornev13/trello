@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TaskSort extends FormRequest
+class SortTasks extends FormRequest
 {
 
     /**
@@ -26,8 +26,8 @@ class TaskSort extends FormRequest
     public function rules()
     {
         return [
-            'set'   => 'required|array',
-            'set.*' => 'integer',
+            'set'       => 'required|array',
+            'set.*'     => 'integer',
         ];
     }
 }

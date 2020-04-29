@@ -143,18 +143,16 @@ class ColumnTest extends TestCase
 
     public function testUpdateSortOfColumns()
     {
-        //$this->withoutExceptionHandling();
-
         $dashboard = Dashboard::where('owner_id', $this->user->id)->first();
         $columns = Column::where('dashboard_id', $dashboard->id)
             ->get()
             ->pluck('id');
 
+        $required = ['dashboard' => $dashboard->id];
+        $data = ['set' => $columns];
+
         $response = $this->actingAs($this->user, 'api')
-            ->putJson(route('columns.sort'), [
-                'dashboard_id' => $dashboard->id,
-                'set'          => $columns
-            ]);
+            ->putJson(route('columns.sort', $required), $data);
 
         collect($columns)->each(function ($id, $index) {
             $column = Column::find($id);

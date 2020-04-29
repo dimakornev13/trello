@@ -11,9 +11,10 @@ class TaskSeeder extends Seeder
      */
     public function run()
     {
-        \App\Column::all()->each(function ($task){
+        \App\Column::all()->each(function ($column){
             factory(\App\Task::class, 5)->create([
-                'column_id' => $task
+                'column_id' => $column->id,
+                'dashboard_id' => $column->dashboard_id
             ]);
         });
     }

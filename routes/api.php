@@ -15,8 +15,10 @@ use \App\Http\Controllers;
 */
 
 Route::middleware('auth:api')->group(function (){
-    Route::put('columns/sort', 'ColumnController@sort')->name('columns.sort');
-    Route::put('tasks/sort', 'TaskController@sort')->name('tasks.sort');
+    Route::put('columns/sort/{dashboard}', 'ColumnController@sort')->name('columns.sort');
+
+    Route::put('tasks/sort/{column}', 'TaskController@sort')->name('tasks.sort');
+    Route::put('tasks/move/{column}/{task}', 'TaskController@move')->name('tasks.move');
 
     Route::resources([
         'dashboard' => DashboardController::class,
