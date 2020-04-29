@@ -14,16 +14,22 @@ use \App\Http\Controllers;
 |
 */
 
-Route::middleware('auth:api')->group(function (){
+Route::middleware('auth:api')->group(function () {
     Route::put('columns/sort/{dashboard}', 'ColumnController@sort')->name('columns.sort');
 
     Route::put('tasks/sort/{column}', 'TaskController@sort')->name('tasks.sort');
     Route::put('tasks/move/{column}/{task}', 'TaskController@move')->name('tasks.move');
 
+    Route::name('comments.')->group(function () {
+        Route::post('create/{task}', 'CommentController@store')->name('create');
+        Route::put('update/{comment}', 'CommentController@update')->name('update');
+        Route::delete('delete/{comment}', 'CommentController@destroy')->name('delete');
+    });
+
     Route::resources([
         'dashboard' => DashboardController::class,
-        'columns' => ColumnController::class,
-        'tasks' => TaskController::class,
+        'columns'   => ColumnController::class,
+        'tasks'     => TaskController::class,
     ]);
 
 });

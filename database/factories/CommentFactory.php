@@ -10,6 +10,5 @@ $factory->define(Comment::class, function (Faker $faker) {
         'content' => $faker->paragraphs(3, true),
         'owner_id' => $faker->randomNumber(),
         'task_id' => $faker->randomNumber(),
-        'dashboard_id' => $faker->randomNumber(),
     ];
 });

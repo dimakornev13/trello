@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
          $this->call(DashboardSeeder::class);
          $this->call(ColumnSeeder::class);
          $this->call(TaskSeeder::class);
+         $this->call(CommentSeeder::class);
     }
 }

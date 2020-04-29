@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Column;
+use App\Comment;
 use App\Dashboard;
 use App\Policies\ColumnPolicy;
+use App\Policies\CommentPolicy;
 use App\Policies\DashboardPolicy;
 use App\Policies\TaskPolicy;
 use App\Task;
@@ -21,6 +23,7 @@ class AuthServiceProvider extends ServiceProvider
         Dashboard::class => DashboardPolicy::class,
         Column::class => ColumnPolicy::class,
         Task::class => TaskPolicy::class,
+        Comment::class => CommentPolicy::class
     ];
 
     /**
