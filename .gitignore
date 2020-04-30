@@ -2,6 +2,7 @@
 /public
 /storage
 /vendor
+/.vagrant
 .idea
 .env
 .env.backup

@@ -60,8 +60,10 @@ class DashboardController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param StoreAndUpdateDashboard $request
      * @param \App\Dashboard $dashboard
+     *
+     * @param DashboardRepository $repository
      *
      * @return \Illuminate\Http\Response
      */
@@ -75,7 +77,7 @@ class DashboardController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Dashboard $dashboard
-     *
+     * @param DashboardRepository $repository
      */
     public function destroy(Dashboard $dashboard, DashboardRepository $repository): void
     {

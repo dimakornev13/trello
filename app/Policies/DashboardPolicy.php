@@ -70,28 +70,4 @@ class DashboardPolicy
     {
         return $user->id === $dashboard->owner_id;
     }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Dashboard  $dashboard
-     * @return mixed
-     */
-    public function restore(User $user, Dashboard $dashboard)
-    {
-        return $user->id === $dashboard->owner_id;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Dashboard  $dashboard
-     * @return mixed
-     */
-    public function forceDelete(User $user, Dashboard $dashboard)
-    {
-        return $user->id === $dashboard->owner_id;
-    }
 }

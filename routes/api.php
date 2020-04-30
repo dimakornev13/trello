@@ -27,7 +27,7 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::resources([
-        'dashboard' => DashboardController::class,
+        'dashboards' => DashboardController::class,
         'columns'   => ColumnController::class,
         'tasks'     => TaskController::class,
     ]);

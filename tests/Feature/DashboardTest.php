@@ -191,8 +191,6 @@ class DashboardTest extends TestCase
 
     public function testSuccessfulDeleteDashboard()
     {
-        $this->withoutExceptionHandling();
-
         $dashboard = Dashboard::where('owner_id', $this->user->id)->first();
 
         $response = $this->actingAs($this->user, 'api')
