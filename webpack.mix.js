@@ -19,6 +19,8 @@ mix.webpackConfig({
             '@': __dirname + '/resources/js'
         },
     },
-})
+});
 
 mix.js('resources/js/main.js', 'public/js');
+
+mix.copy('node_modules/bootstrap/dist/css/bootstrap.css', 'public/css');
