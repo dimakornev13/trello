@@ -1,14 +1,21 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store'
+
+
 import Home from '../views/Home.vue'
 import LoginPage from '../components/LoginPage'
+
 import DashboardsPage from '../components/DashboardsPage'
 import SingleDashboard from '../components/SingleDashboard'
 import DashboardsDelete from '../components/modal-forms/DashboardsDelete'
 import DashboardsUpdate from '../components/modal-forms/DashboardsUpdate'
 import DashboardsCreate from '../components/modal-forms/DashboardsCreate'
 
-import store from '../store'
+import ColumnDelete from '../components/modal-forms/ColumnDelete'
+import ColumnUpdate from '../components/modal-forms/ColumnUpdate'
+import ColumnCreate from "../components/modal-forms/ColumnCreate";
+
 
 Vue.use(VueRouter)
 
@@ -63,7 +70,33 @@ const routes = [
         component: SingleDashboard,
         meta: {
             requiresAuth: true
-        }
+        },
+        children: [
+            {
+                path: '/dashboards/:id/column/delete/:columnID',
+                name: 'columnDelete',
+                component: ColumnDelete,
+                meta: {
+                    requiresAuth: true
+                },
+            },
+            {
+                path: '/dashboards/:id/column/update/:columnID',
+                name: 'columnUpdate',
+                component: ColumnUpdate,
+                meta: {
+                    requiresAuth: true
+                },
+            },
+            {
+                path: '/dashboards/:id/column/create',
+                name: 'columnCreate',
+                component: ColumnCreate,
+                meta: {
+                    requiresAuth: true
+                },
+            },
+        ]
     },
 ]
 

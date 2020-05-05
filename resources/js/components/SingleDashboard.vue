@@ -2,21 +2,24 @@
     <div id="single-dashboard_wrapper" v-if="dashboard">
         <h1 class="text-left">{{ dashboard.title }}</h1>
 
-
         <draggable id="columns"
                    v-model="columns"
                    class="d-flex"
                    group="columns"
                    draggable=".column-wrapper">
 
-            <column-list v-for="column in columns" :key="column.id" :column="column" />
+            <column-list v-for="column in columns" :key="column.id" :column="column"/>
 
             <div class="column-btn_wrapper" slot="footer">
-                <button class="btn btn-primary width-100">Add column</button>
+                <router-link class="btn btn-primary width-100"
+                             :to="{name: 'columnCreate'}">
+                    Add column
+                </router-link>
             </div>
 
         </draggable>
 
+        <router-view/>
     </div>
 </template>
 
@@ -46,7 +49,7 @@
                 },
                 set(newSetColumns) {
                     // todo change to dispatch
-                    this.$store.commit('column/SET_COLUMNS', newSetColumns)
+                    this.$store.dispatch('column/sortColumn', newSetColumns)
                 }
             },
         },

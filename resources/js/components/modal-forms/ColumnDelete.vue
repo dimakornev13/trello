@@ -1,9 +1,9 @@
 <template>
-    <div class="modal fade" id="dashboard-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" v-show="dashboard">
+    <div class="modal fade" id="dashboard-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" v-show="column">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Are you sure you want to delete the Dashboard: <b>{{ dashboard.title }}</b></h4>
+                    <h4 class="modal-title" id="myModalLabel">Are you sure you want to delete the column: <b>{{ column.title }}</b></h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
@@ -20,10 +20,10 @@
     import {mapState, mapActions} from 'vuex'
 
     export default {
-        name: "DashboardsDelete",
+        name: "ColumnDelete",
 
         created() {
-            this.$store.commit('dashboards/SET_SINGLE_DASHBOARD', this.$route.params.id);
+            this.$store.commit('column/SET_SINGLE_COLUMN', this.$route.params.columnID);
         },
 
         mounted() {
@@ -32,16 +32,15 @@
             elem.on('hidden.bs.modal', this.back);
         },
 
-
-        computed: {
-            ...mapState('dashboards', ['dashboard'])
+        computed:{
+            ...mapState('column', ['column'])
         },
 
         methods: {
-            ...mapActions('dashboards', ['deleteDashboard']),
+            ...mapActions('column', ['deleteColumn']),
 
             deleteAction() {
-                this.deleteDashboard();
+                this.deleteColumn();
                 $('#dashboard-delete').modal('hide');
             },
 

@@ -19,9 +19,13 @@ const actions = {
     },
 
     async loadSingleDashboard({commit}, payload) {
-        let response = await axios.get('/api/dashboards/' + payload.id);
+        let id = payload !== null && payload.id !== null
+            ? payload.id
+            : this.state.dashboards.dashboard.id;
 
-        commit('SET_SINGLE_DASHBOARD', payload.id);
+        let response = await axios.get('/api/dashboards/' + id);
+
+        commit('SET_SINGLE_DASHBOARD', id);
         commit('column/SET_COLUMNS', response.data, {root: true})
     },
 

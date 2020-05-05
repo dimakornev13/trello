@@ -1,13 +1,22 @@
 <template>
     <div class="column-wrapper">
         <div class="column-item_sortable">
-            <div class="column-title text-left font-weight-bold">{{ column.title }}</div>
+            <div class="d-flex flex-row justify-content-between">
+                <router-link class="column-title text-left font-weight-bold"
+                             :to="{name: 'columnUpdate', params:{columnID: column.id}}">
+                    {{ column.title }}
+                </router-link>
 
-            <draggable
-                v-if="column.tasks"
-                group="tasks"
-                draggable=".column-task"
-                v-model="column.task">
+                <router-link class="column-title text-left font-weight-bold"
+                             :to="{name: 'columnDelete', params:{columnID: column.id}}">
+                    &times;
+                </router-link>
+            </div>
+
+            <draggable v-if="column.tasks"
+                       group="tasks"
+                       draggable=".column-task"
+                       v-model="column.task">
 
                 <div class="column-task text-left"
                      v-for="task in column.tasks"
@@ -15,7 +24,11 @@
                     {{ task.title }}
                 </div>
 
-                <button class="btn btn-primary width-100" slot="footer">Add column</button>
+                <router-link :to="{name: 'columnCreate'}"
+                             class="btn btn-primary width-100"
+                             slot="footer">
+                    Add task
+                </router-link>
             </draggable>
 
         </div>
@@ -28,11 +41,12 @@
     export default {
         name: "ColumnList",
 
-        props:['column'],
+        props: ['column'],
 
         components: {
             draggable
-        }
+        },
 
+        methods: {}
     }
 </script>
