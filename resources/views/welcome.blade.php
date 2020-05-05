@@ -10,6 +10,7 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/stylesheets.css') }}" rel="stylesheet">
 
 </head>
 <body>
@@ -18,6 +19,7 @@
         <!-- Content here -->
     </div>
 </div>
+
 <script src="{{ asset('js/main.js') }}"></script>
 
 </body>

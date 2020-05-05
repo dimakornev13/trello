@@ -19,6 +19,9 @@ Route::middleware('auth:api')->group(function () {
         return $request->user();
     });
 
+    // fix https://github.com/laravel/framework/issues/13457
+    Route::post('dashboards/{dashboard}', 'DashboardController@update')->name('dashboards.update');
+
     Route::put('columns/sort/{dashboard}', 'ColumnController@sort')->name('columns.sort');
 
     Route::put('tasks/sort/{column}', 'TaskController@sort')->name('tasks.sort');

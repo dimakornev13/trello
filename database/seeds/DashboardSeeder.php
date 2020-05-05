@@ -13,7 +13,8 @@ class DashboardSeeder extends Seeder
     {
         \App\User::all()->each(function ($user){
             $ids = factory(\App\Dashboard::class, 3)->create([
-                'owner_id' => $user->id
+                'owner_id' => $user->id,
+                'background' => sprintf('storage/%s', 'asphalt_stripes_surface_168436_1920x1080.jpg')
             ])->pluck('id');
 
             $user->dashboards()->sync($ids);

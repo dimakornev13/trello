@@ -1,72 +1,55 @@
-import router from '@/router'
+import router from '../../router'
 
 const state = {
-    token: localStorage.getItem('token') || '',
-    user: {}
-}
-/**************************************************************************/
+    token: null,
+    user: null
+};
+/*****************************************************/
 const getters = {
-    isLogged: state => !!state.token
-}
-/**************************************************************************/
-
-const actions = {
-    login({commit, dispatch}, user) {
-        return new Promise((resolve, reject) => {
-            axios.post('/login', user).then((response) => {
-                commit('setToken', response.data.access_token);
-                dispatch('loadUser');
-            }).catch((e) => reject(e))
-        });
-    },
-
-    logout({commit}) {
-        return new Promise((resolve, reject) => {
-            axios.post('/logout').then((response) => {
-                commit('logout');
-                router.push('/');
-            }).catch((e) => reject(e.response))
-        });
-    },
-
-    loadUser({commit}) {
-        axios.get('/api/user').then((response) => {
-            commit('setUser', response.data);
-            router.push('/dashboards')
-        })
-    },
-
-    setUser({commit}, user) {
-        commit('setUser', user)
-    },
-
-    setToken({commit}, token) {
-        commit('setToken', token)
+    authenticated(state) {
+        return state.user !== null && state.token !== null
     }
 };
-/**************************************************************************/
+/*****************************************************/
+const actions = {
+    async login({dispatch}, form) {
+        let response = await axios.post('/login', form);
 
-const mutations = {
-    setUser(state, user) {
-        state.user = Object.assign({}, user)
+        return dispatch('loadUser', response.data.access_token)
     },
 
-    setToken(state, token) {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-        localStorage.setItem('token', token);
+    async loadUser({commit, state}, token) {
+        if (token)
+            commit('SET_TOKEN', token);
+
+        if (!state.token)
+            return;
+
+        try {
+            let response = await axios.get('/api/user');
+
+            commit('SET_USER', response.data);
+            return router.push({name: 'dashboards'})
+        } catch (error) {
+            commit('SET_TOKEN', null);
+            commit('SET_USER', null)
+        }
+    }
+};
+/*****************************************************/
+const mutations = {
+    SET_TOKEN(state, token) {
         state.token = token
     },
 
-    logout(state) {
-        localStorage.removeItem('token')
-        delete axios.defaults.headers.common['Authorization'];
-        state.token = ''
+    SET_USER(state, user) {
+        state.user = user
     }
-}
-/**************************************************************************/
+};
+/*****************************************************/
 
 export default {
-    // namespaced: true,
+    namespaced: true,
     state,
     getters,
     actions,

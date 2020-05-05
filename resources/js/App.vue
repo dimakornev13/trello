@@ -1,38 +1,33 @@
 <template>
     <div id="app">
-        <header-common v-if="isLogged" />
+
+        <header-component/>
+        <div id="nav" class="text-center" v-if="!authenticated">
+            <router-link to="/">Home</router-link>
+            |
+            <router-link
+                :to="{name: 'login'}">
+                Login
+            </router-link>
+        </div>
 
         <router-view/>
     </div>
 </template>
 
 <script>
-
-    import HeaderCommon from "./views/HeaderCommon";
-    import {mapGetters} from 'vuex';
+    import {mapGetters} from 'vuex'
+    import HeaderComponent from "./components/HeaderComponent";
 
     export default {
-        components: {HeaderCommon},
+        computed: {
+            ...mapGetters({
+                authenticated: 'auth/authenticated',
+            })
+        },
 
-        computed: mapGetters(['isLogged']),
-
-        mounted() {
-            let context = this;
-
-            window.axios.interceptors.response.use(undefined, function (err) {
-                return new Promise(function (resolve, reject) {
-
-                    // if (err.status === 401 || err.config || !err.config.__isRetryRequest) {
-                    if (err.status === 401) {
-                        context.$store.dispatch('logout');
-                    }
-                });
-            });
-
-            if (context.isLogged === true){
-                this.$store.dispatch('loadUser');
-                this.$router.push('/dashboards');
-            }
+        components:{
+            HeaderComponent
         }
     }
 </script>

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Dashboard;
+use App\Services\DashboardService;
 use App\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -42,6 +43,25 @@ class DashboardTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJsonCount(4);
+    }
+
+
+    /**
+     * For user with id=2 count of dashboards is 4
+     *
+     * @return void
+     */
+    public function test_user_can_load_content_of_dashboard()
+    {
+        $dashboard = DashboardService::getUserDashboards($this->user)->first();
+
+        $data = ['dashboard' => $dashboard->id];
+        $response = $this->actingAs($this->user, 'api')
+            ->getJson(route('dashboards.show', $data));
+
+        $response->assertStatus(200);
+
+        $this->assertCount(count($dashboard->columns), json_decode($response->content()));
     }
 
 
@@ -159,21 +179,6 @@ class DashboardTest extends TestCase
 
         $response->assertForbidden();
 
-    }
-
-
-    public function testUserCanViewDashboard()
-    {
-        $dashboard = Dashboard::find(1);
-
-        $response = $this->actingAs($this->user, 'api')
-            ->getJson(route('dashboards.show', ['dashboard' => $dashboard->id]));
-
-        //dd($response->content());
-
-        $response
-            ->assertStatus(200)
-            ->assertSee($dashboard->title);
     }
 
 

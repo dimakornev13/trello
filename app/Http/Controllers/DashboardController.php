@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Dashboard;
+use App\DashboardUser;
 use App\Http\Requests\StoreAndUpdateDashboard;
 use App\Repositories\DashboardRepository;
+use App\Services\DashboardService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -24,7 +26,9 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return auth()->user()->dashboards;
+        $user = auth()->user();
+
+        return DashboardService::getUserDashboards($user);
     }
 
 
@@ -47,13 +51,13 @@ class DashboardController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Dashboard $dashboard
+     * @param Dashboard $dashboard
      *
-     * @return Dashboard
+     * @return JsonResponse
      */
     public function show(Dashboard $dashboard)
     {
-        return $dashboard;
+        return response()->json($dashboard->columns);
     }
 
 

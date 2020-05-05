@@ -42,4 +42,19 @@ class DashboardUser extends Pivot
             ->where('dashboard_id', $dashboardID)
             ->exists();
     }
+
+    /**
+     * return dashboards id where user is member
+     *
+     * @param int $userID
+     * @param int $dashboardID
+     *
+     * @return mixed
+     */
+    public static function getDashboardsID(int $userID)
+    {
+        return static::query()->select('dashboard_id')
+            ->where('user_id', $userID)
+            ->get();
+    }
 }

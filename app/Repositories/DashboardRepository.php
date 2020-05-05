@@ -38,7 +38,7 @@ class DashboardRepository
     {
         $data['background'] = empty($data['background'])
             ? ''
-            : ($data['background'])->store('backgrounds', 'public');
+            : '/storage/' . ($data['background'])->store('backgrounds', 'public');
     }
 
 

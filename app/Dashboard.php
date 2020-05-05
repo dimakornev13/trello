@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dashboard extends Model
 {
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,7 +24,16 @@ class Dashboard extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
+        'id'       => 'integer',
         'owner_id' => 'integer',
     ];
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function columns()
+    {
+        return $this->hasMany(Column::class)->with('tasks')->orderBy('sort');
+    }
 }
