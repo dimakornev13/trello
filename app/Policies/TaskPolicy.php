@@ -123,20 +123,4 @@ class TaskPolicy
         return DashboardUser::isMember($user->id, $task->dashboard_id);
     }
 
-
-    /**
-     * Determine whether the user can permanently move the model.
-     * Check that actions occurs in the same dashboard
-     *
-     * @param \App\User $user
-     * @param Column $newColumn
-     * @param \App\Task $task
-     *
-     * @return mixed
-     */
-    public function move(User $user, Column $newColumn, Task $task)
-    {
-        return $task->dashboard_id === $newColumn->dashboard_id
-            && DashboardUser::isMember($user->id, $task->dashboard_id);
-    }
 }

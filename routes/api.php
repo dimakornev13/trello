@@ -22,11 +22,11 @@ Route::middleware('auth:api')->group(function () {
     // fix https://github.com/laravel/framework/issues/13457
     Route::post('dashboards/{dashboard}', 'DashboardController@update')->name('dashboards.update');
     Route::post('columns/{column}', 'ColumnController@update')->name('columns.update');
+    Route::post('tasks/{task}', 'TaskController@update')->name('tasks.update');
+
 
     Route::post('columns/sort/{dashboard}', 'ColumnController@sort')->name('columns.sort');
-
-    Route::put('tasks/sort/{column}', 'TaskController@sort')->name('tasks.sort');
-    Route::put('tasks/move/{column}/{task}', 'TaskController@move')->name('tasks.move');
+    Route::post('tasks/sort/{column}', 'TaskController@sort')->name('tasks.sort');
 
     Route::name('comments.')->group(function () {
         Route::post('create/{task}', 'CommentController@store')->name('create');

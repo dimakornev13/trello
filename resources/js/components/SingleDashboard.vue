@@ -1,6 +1,6 @@
 <template>
-    <div id="single-dashboard_wrapper" v-if="dashboard">
-        <h1 class="text-left">{{ dashboard.title }}</h1>
+    <div id="single-dashboard_wrapper" v-if="dashboard" :style="{backgroundImage: `url('/${dashboard.background}')`}">
+        <h1 class="text-left dashboard-title">{{ dashboard.title }}</h1>
 
         <draggable id="columns"
                    v-model="columns"

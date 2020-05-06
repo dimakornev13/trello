@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Column;
 use App\Http\Requests\SortTasks;
 use App\Http\Requests\StoreAndUpdateTask;
-use App\Http\Requests\StoreAndUpdateTask as StoreAndUpdateTaskAlias;
 use App\Repositories\TaskRepository;
 use App\Task;
 use Illuminate\Http\Request;
@@ -23,12 +22,12 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreAndUpdateTaskAlias $request
+     * @param StoreAndUpdateTask $request
      * @param TaskRepository $repository
      *
      * @return Task
      */
-    public function store(StoreAndUpdateTaskAlias $request, TaskRepository $repository)
+    public function store(StoreAndUpdateTask $request, TaskRepository $repository)
     {
         return $repository->store($request->validated());
     }
@@ -37,7 +36,7 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreAndUpdateTaskAlias $request
+     * @param StoreAndUpdateTask $request
      * @param Task $task
      * @param TaskRepository $repository
      *
@@ -70,25 +69,11 @@ class TaskController extends Controller
      */
     public function sort(SortTasks $request, Column $column, TaskRepository $repository)
     {
-        $data = $request->validated();
-
         Gate::authorize('sort', [Task::class, $column]);
+
+        $data = $request->validated();
 
         $repository->sort($column, $data);
     }
 
-
-    /**
-     * move tasks inside column
-     *
-     * @param Column $column
-     * @param Task $task
-     * @param TaskRepository $repository
-     */
-    public function move(Column $column, Task $task, TaskRepository $repository)
-    {
-        Gate::authorize('move', [Task::class, $column, $task]);
-
-        $repository->move($column, $task);
-    }
 }

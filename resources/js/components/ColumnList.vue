@@ -16,15 +16,17 @@
             <draggable v-if="column.tasks"
                        group="tasks"
                        draggable=".column-task"
-                       v-model="column.task">
+                       v-model="tasks">
 
-                <div class="column-task text-left"
+                <div class="column-task d-flex flex-row justify-content-between align-self-start"
                      v-for="task in column.tasks"
                      :key="task.id">
-                    {{ task.title }}
+
+                    <router-link :to="{name: 'taskUpdate', params: {columnID: column.id, id: column.dashboard_id, taskID: task.id}}">{{ task.title }}</router-link>
+                    <router-link class="task-delete" :to="{name: 'taskDelete', params: {columnID: column.id, id: column.dashboard_id, taskID: task.id}}">&times;</router-link>
                 </div>
 
-                <router-link :to="{name: 'columnCreate'}"
+                <router-link :to="{name: 'taskCreate', params: {columnID: column.id, id: column.dashboard_id}}"
                              class="btn btn-primary width-100"
                              slot="footer">
                     Add task
@@ -37,6 +39,7 @@
 
 <script>
     import draggable from 'vuedraggable'
+    import {mapActions} from 'vuex';
 
     export default {
         name: "ColumnList",
@@ -47,6 +50,19 @@
             draggable
         },
 
-        methods: {}
+        computed: {
+            tasks: {
+                get() {
+                    return this.column.tasks
+                },
+                set(newTasks) {
+                    this.$store.dispatch('column/setNewTasks', {
+                        ...this.column,
+                        tasks: newTasks
+                    })
+                }
+            }
+        },
+
     }
 </script>

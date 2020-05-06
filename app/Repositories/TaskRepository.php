@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Column;
 use App\Events\TaskCreated;
 use App\Task;
+use Illuminate\Support\Facades\DB;
 
 class TaskRepository
 {
@@ -42,21 +43,23 @@ class TaskRepository
     /**
      * sort tasks inside column
      *
-     * @param Column $task
+     * @param Column $column
      * @param array $set
      */
-    public function sort(Column $task, array $set): void
+    public function sort(Column $column, array $set): void
     {
-        Task::where('column_id', $task->id)
-            ->get()
-            ->each(function ($column) use ($set) {
-                if (!in_array($column->id, $set['set']))
-                    return true;
+        $case = collect($set['set'])->map(function ($id, $index) {
+            return sprintf('WHEN id = %d then %d', $id, $index);
+        })->implode(' ');
+        $case = sprintf('(case %s end)', $case);
 
-                $column->sort = array_search($column->id, $set['set']);
-                $column->save();
-            });
-
+        DB::table((new Task())->getTable())
+            ->where('dashboard_id', $column->dashboard_id)
+            ->whereIn('id', $set['set'])
+            ->update([
+                'sort'      => DB::raw($case),
+                'column_id' => $column->id
+            ]);
     }
 
 
@@ -77,7 +80,8 @@ class TaskRepository
      * @param Column $column
      * @param Task $task
      */
-    public function move(Column $column, Task $task){
+    public function move(Column $column, Task $task)
+    {
         $task->update([
             'column_id' => $column->id
         ]);

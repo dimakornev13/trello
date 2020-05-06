@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade" id="dashboard-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" v-if="column">
+    <div class="modal fade" id="dashboard-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" v-if="task">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -8,7 +8,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="column title" v-model="column.title">
+                        <input type="text" class="form-control" placeholder="task title" v-model="task.title">
+                    </div>
+                    <div class="form-group">
+                        <textarea type="text" class="form-control" placeholder="task description" v-model="task.description"></textarea>
                     </div>
 
                 </div>
@@ -22,13 +25,10 @@
 </template>
 
 <script>
-
-    import {mapState} from 'vuex'
-
     export default {
         name: "ColumnCommonForm",
 
-        props: ['title', 'action', 'column'],
+        props: ['title', 'action', 'column', 'task'],
 
         mounted() {
             let elem = $('#dashboard-form');
@@ -36,15 +36,10 @@
             elem.on('hidden.bs.modal', this.back);
         },
 
-        computed: {
-            ...mapState('dashboards', ['dashboard']),
-        },
-
         methods: {
             submitAction() {
                 const form = {
-                    title: this.column.title,
-                    dashboard_id: this.dashboard.id
+                    ...this.task,
                 };
 
                 this.action(form);

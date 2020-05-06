@@ -16,6 +16,9 @@ import ColumnDelete from '../components/modal-forms/ColumnDelete'
 import ColumnUpdate from '../components/modal-forms/ColumnUpdate'
 import ColumnCreate from "../components/modal-forms/ColumnCreate";
 
+import TaskCreate from "../components/modal-forms/TaskCreate";
+import TaskUpdate from "../components/modal-forms/TaskUpdate";
+import TaskDelete from "../components/modal-forms/TaskDelete";
 
 Vue.use(VueRouter)
 
@@ -92,6 +95,46 @@ const routes = [
                 path: '/dashboards/:id/column/create',
                 name: 'columnCreate',
                 component: ColumnCreate,
+                meta: {
+                    requiresAuth: true
+                },
+            },
+            {
+                path: '/dashboards/:id/column/delete/:columnID',
+                name: 'columnDelete',
+                component: ColumnDelete,
+                meta: {
+                    requiresAuth: true
+                },
+            },
+            {
+                path: '/dashboards/:id/column/update/:columnID',
+                name: 'columnUpdate',
+                component: ColumnUpdate,
+                meta: {
+                    requiresAuth: true
+                },
+            },
+            {
+                path: '/dashboards/:id/column/:columnID/task/create',
+                name: 'taskCreate',
+                component: TaskCreate,
+                meta: {
+                    requiresAuth: true
+                },
+            },
+            {
+                path: '/dashboards/:id/column/:columnID/task/update/:taskID',
+                name: 'taskUpdate',
+                component: TaskUpdate,
+                meta: {
+                    requiresAuth: true
+                },
+            },
+            {
+                path: '/dashboards/:id/column/:columnID/task/delete/:taskID',
+                name: 'taskDelete',
+                component: TaskDelete,
                 meta: {
                     requiresAuth: true
                 },

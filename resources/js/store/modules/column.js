@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 const state = {
     columns: [],
     column: null
@@ -34,6 +36,13 @@ const actions = {
         let response = await axios.post('/api/columns/sort/' + this.state.dashboards.dashboard.id, {set: newColumnsSet});
     },
 
+    setNewTasks({commit}, column) {
+        const formData = column.tasks.map((task) => task.id)
+
+        axios.post('/api/tasks/sort/' + column.id, {set: formData});
+
+        commit('SET_NEW_TASKS', column)
+    }
 };
 /*****************************************************/
 const mutations = {
@@ -43,6 +52,20 @@ const mutations = {
 
     SET_SINGLE_COLUMN(state, id) {
         state.column = state.columns.find((d) => d.id === id)
+    },
+
+    SET_NEW_TASKS(state, column) {
+        let columns = state.columns.map((col) => {
+            return col.id === column.id
+                ? column
+                : col;
+        });
+
+        Vue.set(state, 'columns', columns)
+    },
+
+    ADD_NEW_TASK(state, task){
+        state.column.tasks.push(task)
     }
 };
 /*****************************************************/
