@@ -28,10 +28,10 @@ Route::middleware('auth:api')->group(function () {
     Route::post('columns/sort/{dashboard}', 'ColumnController@sort')->name('columns.sort');
     Route::post('tasks/sort/{column}', 'TaskController@sort')->name('tasks.sort');
 
-    Route::name('comments.')->group(function () {
-        Route::post('create/{task}', 'CommentController@store')->name('create');
-        Route::put('update/{comment}', 'CommentController@update')->name('update');
-        Route::delete('delete/{comment}', 'CommentController@destroy')->name('delete');
+    Route::name('comments.')->prefix('comments')->group(function () {
+        Route::post('{task}', 'CommentController@store')->name('create');
+        Route::post('{comment}', 'CommentController@update')->name('update');
+        Route::delete('{comment}', 'CommentController@destroy')->name('delete');
     });
 
     Route::resources([

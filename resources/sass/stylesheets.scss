@@ -344,3 +344,25 @@ input[type=button]:active, input[type=submit]:active, input[type=reset]:active {
 .dashboard-title {
     color: #fff;
 }
+
+.delete-comment_btn{
+    display: none;
+}
+
+.comment-user{
+    padding: 15px 0;
+
+    &:hover{
+        .delete-comment_btn{
+            display: unset;
+        }
+    }
+}
+
+.task-comments{
+    margin-top: 20px;
+}
+
+.task-comment_add{
+    margin-top: 20px;
+}

@@ -31,4 +31,22 @@ class Task extends Model
         'column_id' => 'integer',
         'archived' => 'boolean',
     ];
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments(){
+        return $this->hasMany(Comment::class)->orderBy('id', 'desc');
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function history(){
+        return $this->hasMany(History::class)->orderBy('id', 'desc');
+    }
+
+
 }

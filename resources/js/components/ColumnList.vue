@@ -27,7 +27,7 @@
                 </div>
 
                 <router-link :to="{name: 'taskCreate', params: {columnID: column.id, id: column.dashboard_id}}"
-                             class="btn btn-primary width-100"
+                             class="btn btn-sm btn-primary width-100"
                              slot="footer">
                     Add task
                 </router-link>

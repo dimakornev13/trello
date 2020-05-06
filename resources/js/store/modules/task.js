@@ -21,6 +21,12 @@ const actions = {
         return dispatch('dashboards/loadSingleDashboard', null, {root: true})
     },
 
+    async showTask({commit}, taskID) {
+        let response = await axios.get('/api/tasks/' + taskID)
+
+        return commit('SET_SINGLE_TASK', response.data)
+    },
+
     setSingleTask({commit}, taskID) {
         const task = this.state.column.column.tasks.find((task) => task.id === taskID)
 

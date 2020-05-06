@@ -5,8 +5,6 @@ namespace App\Repositories;
 
 
 use App\Dashboard;
-use App\Events\DashboardCreated;
-use App\Events\DashboardDeleted;
 use Illuminate\Support\Facades\Storage;
 
 class DashboardRepository
@@ -22,8 +20,6 @@ class DashboardRepository
         $this->setBackground($data);
 
         $dashboard = Dashboard::create($data);
-
-        event(new DashboardCreated($dashboard));
 
         return $dashboard;
     }
@@ -81,7 +77,5 @@ class DashboardRepository
         $this->deleteOldBackground($dashboard);
 
         $dashboard->delete();
-
-        event(new DashboardDeleted($dashboard));
     }
 }

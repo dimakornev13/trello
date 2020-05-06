@@ -27,4 +27,12 @@ class Comment extends Model
         'id' => 'integer',
         'owner_id' => 'integer',
     ];
+
+
+    /**
+     *
+     */
+    public function user(){
+        return $this->hasOne(User::class, 'id', 'owner_id');
+    }
 }

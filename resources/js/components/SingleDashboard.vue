@@ -11,7 +11,7 @@
             <column-list v-for="column in columns" :key="column.id" :column="column"/>
 
             <div class="column-btn_wrapper" slot="footer">
-                <router-link class="btn btn-primary width-100"
+                <router-link class="btn  btn-sm btn-primary width-100"
                              :to="{name: 'columnCreate'}">
                     Add column
                 </router-link>

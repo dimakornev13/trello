@@ -1,6 +1,6 @@
 <template>
     <div class="modal fade" id="dashboard-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" v-if="task">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel">{{ title }}</h4>
@@ -14,39 +14,45 @@
                         <textarea type="text" class="form-control" placeholder="task description" v-model="task.description"></textarea>
                     </div>
 
+                    <div class="text-right">
+                        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-sm btn-primary" @click="submitAction">Send</button>
+                    </div>
+
+                    <task-comments class="task-comments" :task="task" v-if="task.comments.length"/>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" @click="submitAction">Send</button>
-                </div>
+
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import TaskComments from "../TaskComments";
+
     export default {
-        name: "ColumnCommonForm",
+        name: "TaskForm",
+
+        components: {
+            TaskComments
+        },
 
         props: ['title', 'action', 'column', 'task'],
 
-        mounted() {
-            let elem = $('#dashboard-form');
-            elem.modal('show');
-            elem.on('hidden.bs.modal', this.back);
+        updated() {
+            if (this.task !== null) {
+                let elem = $('#dashboard-form');
+                elem.modal('show');
+                elem.on('hidden.bs.modal', this.back);
+            }
         },
 
         methods: {
             submitAction() {
-                const form = {
-                    ...this.task,
-                };
-
-                this.action(form);
+                this.action({...this.task});
 
                 $('#dashboard-form').modal('hide');
             },
-
 
             back() {
                 this.$router.go(-1);

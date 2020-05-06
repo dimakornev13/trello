@@ -18,8 +18,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" @click="submit">Send</button>
+                    <button type="button" class="btn  btn-sm btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn  btn-sm btn-primary" @click="submit">Send</button>
                 </div>
             </div>
         </div>

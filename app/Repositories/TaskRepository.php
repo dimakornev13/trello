@@ -20,8 +20,6 @@ class TaskRepository
 
         $task = Task::create($data);
 
-        event(new TaskCreated($task));
-
         return $task;
     }
 

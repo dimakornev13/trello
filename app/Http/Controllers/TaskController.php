@@ -34,6 +34,19 @@ class TaskController extends Controller
 
 
     /**
+     * @param Task $task
+     *
+     * @return Task
+     */
+    public function show(Task $task)
+    {
+        $task->load(['comments', 'comments.user', 'history']);
+
+        return $task;
+    }
+
+
+    /**
      * Update the specified resource in storage.
      *
      * @param StoreAndUpdateTask $request

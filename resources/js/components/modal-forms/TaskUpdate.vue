@@ -13,7 +13,7 @@
 
         created() {
             this.$store.commit('column/SET_SINGLE_COLUMN', this.$route.params.columnID);
-            this.$store.dispatch('task/setSingleTask', this.$route.params.taskID);
+            this.$store.dispatch('task/showTask', this.$route.params.taskID);
         },
 
         components: {
