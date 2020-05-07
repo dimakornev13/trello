@@ -1,5 +1,6 @@
 import router from '../../router'
 
+
 const state = {
     dashboards: [],
     dashboard: null
@@ -29,19 +30,19 @@ const actions = {
         commit('column/SET_COLUMNS', response.data, {root: true})
     },
 
-    async createDashboard({dispatch}, formData){
+    async createDashboard({dispatch}, formData) {
         let response = await axios.post('/api/dashboards', formData);
 
         return dispatch('loadDashboards')
     },
 
-    async updateDashboard({dispatch}, formData){
+    async updateDashboard({dispatch}, formData) {
         let response = await axios.post(`/api/dashboards/${this.state.dashboards.dashboard.id}`, formData);
 
         return dispatch('loadDashboards')
     },
 
-    async deleteDashboard({dispatch}){
+    async deleteDashboard({dispatch}) {
         let response = await axios.delete(`/api/dashboards/${this.state.dashboards.dashboard.id}`);
 
         return dispatch('loadDashboards')

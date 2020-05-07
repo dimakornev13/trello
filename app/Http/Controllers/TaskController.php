@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Column;
+use App\Events\TaskHasBeenSorted;
 use App\Http\Requests\SortTasks;
 use App\Http\Requests\StoreAndUpdateTask;
 use App\Repositories\TaskRepository;
@@ -87,6 +88,10 @@ class TaskController extends Controller
         $data = $request->validated();
 
         $repository->sort($column, $data);
+
+        $column->load('tasks');
+
+        event(new TaskHasBeenSorted($column, auth()->user()));
     }
 
 }

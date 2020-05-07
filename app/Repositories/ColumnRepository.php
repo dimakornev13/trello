@@ -67,7 +67,7 @@ class ColumnRepository
      */
     public function sort(Dashboard $dashboard, array $set)
     {
-        Column::where('dashboard_id', $dashboard->id)
+        return Column::where('dashboard_id', $dashboard->id)
             ->get()
             ->each(function ($column) use ($set) {
                 if (!in_array($column->id, $set['set']))
@@ -76,5 +76,6 @@ class ColumnRepository
                 $column->sort = array_search($column->id, $set['set']);
                 $column->save();
             });
+
     }
 }

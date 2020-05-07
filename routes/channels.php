@@ -3,15 +3,6 @@
 use Illuminate\Support\Facades\Broadcast;
 use \App\Broadcasting;
 
-/*
-|--------------------------------------------------------------------------
-| Broadcast Channels
-|--------------------------------------------------------------------------
-|
-| Here you may register all of the event broadcasting channels that your
-| application supports. The given channel authorization callbacks are
-| used to check if an authenticated user can listen to the channel.
-|
-*/
-
-Broadcast::channel('dashboard.{dashboard}', DashboardChannel::class);
+Broadcast::channel('dashboard.{dashboard_id}', function ($user, $dashboard_id){
+    return \App\DashboardUser::isMember($user->id, (int)$dashboard_id);
+});

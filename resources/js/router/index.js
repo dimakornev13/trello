@@ -100,22 +100,6 @@ const routes = [
                 },
             },
             {
-                path: '/dashboards/:id/column/delete/:columnID',
-                name: 'columnDelete',
-                component: ColumnDelete,
-                meta: {
-                    requiresAuth: true
-                },
-            },
-            {
-                path: '/dashboards/:id/column/update/:columnID',
-                name: 'columnUpdate',
-                component: ColumnUpdate,
-                meta: {
-                    requiresAuth: true
-                },
-            },
-            {
                 path: '/dashboards/:id/column/:columnID/task/create',
                 name: 'taskCreate',
                 component: TaskCreate,

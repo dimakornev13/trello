@@ -38,6 +38,19 @@
 
         mounted() {
             this.loadSingleDashboard(this.$route.params)
+
+            this.channel = this.$pusher.subscribe(`private-dashboard.${this.$route.params.id}`)
+
+            this.channel.bind('TaskHasBeenSorted', (e) => {
+                this.taskHasBeenSorted(e.column)
+            })
+
+        },
+
+        data() {
+            return {
+                channel: null
+            }
         },
 
         computed: {
@@ -56,6 +69,7 @@
 
         methods: {
             ...mapActions('dashboards', ['loadSingleDashboard']),
+            ...mapActions('column', ['taskHasBeenSorted']),
         }
     }
 </script>

@@ -1,10 +1,9 @@
-require('./bootstrap');
-
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 
+require('./bootstrap');
 require('./store/subscriber');
 
 Vue.config.productionTip = false

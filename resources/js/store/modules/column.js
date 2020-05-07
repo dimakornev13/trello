@@ -42,6 +42,10 @@ const actions = {
         axios.post('/api/tasks/sort/' + column.id, {set: formData});
 
         commit('SET_NEW_TASKS', column)
+    },
+
+    taskHasBeenSorted({commit}, column){
+        commit('SET_NEW_TASKS', column)
     }
 };
 /*****************************************************/
