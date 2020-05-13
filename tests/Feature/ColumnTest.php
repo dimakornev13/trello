@@ -143,6 +143,8 @@ class ColumnTest extends TestCase
 
     public function testUpdateSortOfColumns()
     {
+        $this->withoutExceptionHandling();
+
         $dashboard = Dashboard::where('owner_id', $this->user->id)->first();
         $columns = Column::where('dashboard_id', $dashboard->id)
             ->get()
@@ -152,7 +154,7 @@ class ColumnTest extends TestCase
         $data = ['set' => $columns];
 
         $response = $this->actingAs($this->user, 'api')
-            ->putJson(route('columns.sort', $required), $data);
+            ->postJson(route('columns.sort', $required), $data);
 
         collect($columns)->each(function ($id, $index) {
             $column = Column::find($id);

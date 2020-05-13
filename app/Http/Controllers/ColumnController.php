@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Column;
 use App\Dashboard;
-use App\Events\ColumnHasBeenUpdated;
 use App\Http\Requests\ColumnSort;
 use App\Http\Requests\StoreAndUpdateColumn;
 use App\Repositories\ColumnRepository;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class ColumnController extends Controller
@@ -69,10 +67,9 @@ class ColumnController extends Controller
      * @param ColumnRepository $repository
      */
     public function sort(ColumnSort $request, Dashboard $dashboard, ColumnRepository $repository){
-        Gate::authorize('sort', [Column::class, $dashboard]);
+        Gate::authorize('sort', [Dashboard::class, $dashboard]);
 
         $repository->sort($dashboard, $request->validated());
 
-        event(new ColumnHasBeenUpdated());
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Dashboard;
+use App\DashboardUser;
 use App\Services\DashboardService;
 use App\User;
 use Illuminate\Http\UploadedFile;
@@ -84,17 +85,15 @@ class DashboardTest extends TestCase
             ->postJson(route('dashboards.store'), $data);
 
         $response
-            ->assertStatus(201)
+            ->assertCreated()
             ->assertSee($data['title'])
             ->assertSee(str_replace('/', '\/', $filePath));
-
-        $this->assertCount(5, $this->user->dashboards);
 
         Storage::disk('public')->assertExists($filePath);
 
         $dashboard = Dashboard::find($response['id']);
 
-        $this->assertEquals($filePath, $dashboard->background);
+        $this->assertEquals('/storage/'.$filePath, $dashboard->background);
     }
 
 
@@ -155,7 +154,7 @@ class DashboardTest extends TestCase
 
         $dashboard = Dashboard::find($response['id']);
 
-        $this->assertEquals($filePath, $dashboard->background);
+        $this->assertEquals('/storage/'.$filePath, $dashboard->background);
     }
 
 

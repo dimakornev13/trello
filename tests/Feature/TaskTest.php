@@ -79,7 +79,7 @@ class TaskTest extends TestCase
         $data['title'] = 'some text';
 
         $response = $this->actingAs($this->user, 'api')
-            ->putJson(route('tasks.update', ['task' => $task->id]), $data);
+            ->postJson(route('tasks.update', ['task' => $task->id]), $data);
 
         $response
             ->assertStatus(200)
@@ -97,7 +97,7 @@ class TaskTest extends TestCase
         $data['title'] = 'some text';
 
         $response = $this->actingAs($this->user, 'api')
-            ->putJson(route('tasks.update', ['task' => $task->id]), $data);
+            ->postJson(route('tasks.update', ['task' => $task->id]), $data);
 
         $response->assertForbidden();
     }
@@ -133,6 +133,8 @@ class TaskTest extends TestCase
 
     public function testUserCanSortTasks()
     {
+        $this->withoutExceptionHandling();
+
         $column = Column::whereIn('dashboard_id', function ($query) {
             return $this->getDashboardIDForUser($query);
         })->first();
@@ -143,7 +145,7 @@ class TaskTest extends TestCase
         ];
 
         $response = $this->actingAs($this->user, 'api')
-            ->putJson(route('tasks.sort', $required), $data);
+            ->postJson(route('tasks.sort', $required), $data);
 
         Task::where('column_id', $column->id)
             ->each(function ($task) use ($data) {
@@ -154,36 +156,6 @@ class TaskTest extends TestCase
 
         $response
             ->assertStatus(200);
-    }
-
-
-    public function testUserMoveTaskToAnotherColumn()
-    {
-        $this->withoutExceptionHandling();
-
-        $columnOld = Column::whereIn('dashboard_id', function ($query) {
-            return $this->getDashboardIDForUser($query);
-        })->first();
-
-        $task = Task::where('column_id', $columnOld->id)->first();
-
-        $columnNew = Column::whereIn('dashboard_id', function ($query) {
-            return $this->getDashboardIDForUser($query);
-        })->where('id', '<>', $columnOld->id)->first();
-
-        $required = [
-            'column' => $columnNew->id,
-            'task'   => $task->id
-        ];
-
-        $response = $this->actingAs($this->user, 'api')
-            ->putJson(route('tasks.move', $required));
-
-        $task = Task::find($task->id);
-
-        $this->assertEquals($columnNew->id, $task->column_id);
-
-        $response->assertStatus(200);
     }
 
 

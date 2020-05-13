@@ -6,8 +6,7 @@ namespace App\Repositories;
 
 use App\Column;
 use App\Dashboard;
-use App\Events\ColumnCreated;
-use App\Events\ColumnDeleted;
+use Illuminate\Support\Facades\DB;
 
 class ColumnRepository
 {
@@ -27,8 +26,6 @@ class ColumnRepository
         $this->setSort();
 
         $column = Column::create($this->data);
-
-        event(new ColumnCreated($column));
 
         return $column;
     }
@@ -54,8 +51,6 @@ class ColumnRepository
     public function delete(Column $column)
     {
         $column->delete();
-
-        event(new ColumnDeleted($column));
     }
 
 
@@ -63,19 +58,20 @@ class ColumnRepository
      * update sort field for columns from one dashboard just
      *
      * @param Dashboard $dashboard
-     * @param array $set
+     * @param array $form_data
      */
-    public function sort(Dashboard $dashboard, array $set)
+    public function sort(Dashboard $dashboard, array $form_data)
     {
-        return Column::where('dashboard_id', $dashboard->id)
-            ->get()
-            ->each(function ($column) use ($set) {
-                if (!in_array($column->id, $set['set']))
-                    return true;
+        // update %table where (case WHEN id = %d then %d ... end)
+        $case = collect($form_data['set'])->map(function ($id, $index) {
+            return sprintf('WHEN id = %d THEN %d', $id, $index);
+        })->implode(' ');
 
-                $column->sort = array_search($column->id, $set['set']);
-                $column->save();
-            });
+        $case = sprintf('(case %s end)', $case);
 
+        DB::table((new Column())->getTable())
+            ->where('dashboard_id', $dashboard->id)
+            ->whereIn('id', $form_data['set'])
+            ->update(['sort' => DB::raw($case)]);
     }
 }

@@ -42,10 +42,10 @@ class CommentTest extends TestCase
         })->first();
 
         $data = ['content' => 'some text'];
-        $requried = ['task' => $task->id];
+        $required = ['task' => $task->id];
 
         $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('comments.create', $requried), $data);
+            ->postJson(route('comments.create', $required), $data);
 
         $response->assertCreated()
             ->assertSee($data['content']);
@@ -64,10 +64,10 @@ class CommentTest extends TestCase
         })->first();
 
         $data = ['content' => 'some text'];
-        $requried = ['task' => $task->id];
+        $required = ['task' => $task->id];
 
         $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('comments.create', $requried), $data);
+            ->postJson(route('comments.create', $required), $data);
 
         $response->assertForbidden();
     }
@@ -85,12 +85,13 @@ class CommentTest extends TestCase
         $data = $comment->toArray();
         $data['content'] = 'anoth text';
 
-        $requried = ['comment' => $comment->id];
+        $required = ['comment' => $comment->id];
 
         $response = $this->actingAs($this->user, 'api')
-            ->putJson(route('comments.update', $requried), $data);
+            ->postJson(route('comments.update', $required), $data);
 
-        $response->assertStatus(200)
+        $response
+            ->assertStatus(200)
             ->assertSee($data['content']);
     }
 
@@ -107,10 +108,10 @@ class CommentTest extends TestCase
         $data = $comment->toArray();
         $data['content'] = 'anoth text';
 
-        $requried = ['comment' => $comment->id];
+        $required = ['comment' => $comment->id];
 
         $response = $this->actingAs($this->user, 'api')
-            ->putJson(route('comments.update', $requried), $data);
+            ->postJson(route('comments.update', $required), $data);
 
         $response->assertForbidden();
     }
@@ -124,10 +125,11 @@ class CommentTest extends TestCase
     public function testUserCanDeleteComment()
     {
         $comment = Comment::where('owner_id', $this->user->id)->first();
-        $requried = ['comment' => $comment->id];
+        $required = ['comment' => $comment->id];
 
         $response = $this->actingAs($this->user, 'api')
-            ->deleteJson(route('comments.delete', $requried));
+            ->deleteJson(route('comments.delete', $required));
+
         $response->assertStatus(200);
 
         $comment = Comment::find($comment->id);
@@ -145,10 +147,10 @@ class CommentTest extends TestCase
     {
         $comment = Comment::where('owner_id', '<>', $this->user->id)->first();
 
-        $requried = ['comment' => $comment->id];
+        $required = ['comment' => $comment->id];
 
         $response = $this->actingAs($this->user, 'api')
-            ->deleteJson(route('comments.delete', $requried));
+            ->deleteJson(route('comments.delete', $required));
 
         $response->assertForbidden();
     }

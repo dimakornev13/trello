@@ -19,9 +19,7 @@ class DashboardRepository
     {
         $this->setBackground($data);
 
-        $dashboard = Dashboard::create($data);
-
-        return $dashboard;
+        return Dashboard::create($data);
     }
 
 

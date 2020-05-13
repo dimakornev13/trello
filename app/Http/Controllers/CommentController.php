@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Comment;
 use App\Http\Requests\CreateComment;
 use App\Task;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
@@ -35,20 +33,17 @@ class CommentController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param CreateComment $request
      * @param Comment $comment
      *
+     * @return mixed
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(CreateComment $request, Comment $comment)
     {
         $this->authorize('update', [Comment::class, $comment]);
 
-        $data = $request->validated();
-
-        $comment->update($data);
+        $comment->update($request->validated());
 
         return $comment;
     }

@@ -29,7 +29,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('tasks/sort/{column}', 'TaskController@sort')->name('tasks.sort');
 
     Route::name('comments.')->prefix('comments')->group(function () {
-        Route::post('{task}', 'CommentController@store')->name('create');
+        Route::post('/task/{task}', 'CommentController@store')->name('create');
         Route::post('{comment}', 'CommentController@update')->name('update');
         Route::delete('{comment}', 'CommentController@destroy')->name('delete');
     });
