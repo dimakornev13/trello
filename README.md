@@ -1,4 +1,4 @@
-The pet project by Laravel+VueJs (websocket, broadcasting, api) for learning websocket & sortable (draggable).
+The pet project (MVP) by Laravel + VueJs (websocket, broadcasting, api) for learning websocket & sortable (draggable).
 Hot reloading was made just for tasks sorting.
 
 ## Project setup
