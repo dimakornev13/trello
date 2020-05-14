@@ -1,24 +1,32 @@
-# 
+The pet project (MVP) by Laravel + VueJs (websocket, broadcasting, api) for learning websocket & sortable (draggable).
+Hot reloading was made just for tasks sorting.
 
 ## Project setup
 ```
-npm install
+1. vagrant up
+2. vagrant ssh
+3. cd code
+4. npm install
+5. composer install
+6. art migrate --seed
+
+7. repeat 1-3 steps in the second terminal
+8. art queue:work
+
+9. repeat 1-3 steps in the third terminal
+10. art websocket:serve
+
+11. art test (in the first terminal)
+12. add trello-copy.my to hosts file
 ```
 
-### Compiles and hot-reloads for development
+## Login into different browsers like:
 ```
-npm run serve
+user-2@none.com
+test
+
+user-2@none.com
+test
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Hot reloading works just for tasks sorting
