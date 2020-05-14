@@ -37,7 +37,7 @@ class DashboardRepository
 
 
     /**
-     * update dsahboard
+     * update dashboard
      *
      * @param Dashboard $dashboard
      * @param array $data

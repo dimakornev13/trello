@@ -3,19 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Dashboard;
-use App\DashboardUser;
 use App\Http\Requests\StoreAndUpdateDashboard;
 use App\Repositories\DashboardRepository;
 use App\Services\DashboardService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
 
-    public function __construct()
+    private $repository;
+
+    public function __construct(DashboardRepository $repository)
     {
         $this->authorizeResource(Dashboard::class, 'dashboard');
+
+        $this->repository = $repository;
     }
 
 
@@ -26,9 +28,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-
-        return DashboardService::getUserDashboards($user);
+        return DashboardService::getUserDashboards(auth()->user());
     }
 
 
@@ -39,12 +39,12 @@ class DashboardController extends Controller
      *
      * @return mixed
      */
-    public function store(StoreAndUpdateDashboard $request, DashboardRepository $repository)
+    public function store(StoreAndUpdateDashboard $request)
     {
         $data = $request->validated();
         $data['owner_id'] = auth()->user()->id;
 
-        return $repository->store($data);
+        return $this->repository->store($data);
     }
 
 
@@ -67,13 +67,11 @@ class DashboardController extends Controller
      * @param StoreAndUpdateDashboard $request
      * @param \App\Dashboard $dashboard
      *
-     * @param DashboardRepository $repository
-     *
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreAndUpdateDashboard $request, Dashboard $dashboard, DashboardRepository $repository)
+    public function update(StoreAndUpdateDashboard $request, Dashboard $dashboard)
     {
-        return $repository->update($dashboard, $request->validated());
+        return $this->repository->update($dashboard, $request->validated());
     }
 
 
@@ -81,10 +79,9 @@ class DashboardController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Dashboard $dashboard
-     * @param DashboardRepository $repository
      */
-    public function destroy(Dashboard $dashboard, DashboardRepository $repository): void
+    public function destroy(Dashboard $dashboard): void
     {
-        $repository->delete($dashboard);
+        $this->repository->delete($dashboard);
     }
 }

@@ -12,9 +12,13 @@ use Illuminate\Support\Facades\Gate;
 class ColumnController extends Controller
 {
 
-    public function __construct()
+    private $repository;
+
+    public function __construct(ColumnRepository $repository)
     {
         $this->authorizeResource(Column::class, 'column');
+
+        $this->repository = $repository;
     }
 
 
@@ -22,15 +26,14 @@ class ColumnController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreAndUpdateColumn $request
-     * @param ColumnRepository $repository
      *
      * @return Column
      */
-    public function store(StoreAndUpdateColumn $request, ColumnRepository $repository): Column
+    public function store(StoreAndUpdateColumn $request): Column
     {
         $data = $request->validated();
 
-        return $repository->store($data);
+        return $this->repository->store($data);
     }
 
 
@@ -39,13 +42,16 @@ class ColumnController extends Controller
      *
      * @param StoreAndUpdateColumn $request
      * @param \App\Column $column
-     * @param ColumnRepository $repository
      *
      * @return mixed
      */
-    public function update(StoreAndUpdateColumn $request, Column $column, ColumnRepository $repository)
+    public function update(StoreAndUpdateColumn $request, Column $column)
     {
-        return $repository->update($column, $request->validated());
+        $form_data = $request->validated();
+
+        $column->update($form_data);
+
+        return $column;
     }
 
 
@@ -53,23 +59,21 @@ class ColumnController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Column $column
-     * @param ColumnRepository $repository
      */
-    public function destroy(Column $column, ColumnRepository $repository): void
+    public function destroy(Column $column): void
     {
-        $repository->delete($column);
+        $column->delete();
     }
 
 
     /**
      * @param ColumnSort $request
      * @param Dashboard $dashboard
-     * @param ColumnRepository $repository
      */
-    public function sort(ColumnSort $request, Dashboard $dashboard, ColumnRepository $repository){
+    public function sort(ColumnSort $request, Dashboard $dashboard){
         Gate::authorize('sort', [Dashboard::class, $dashboard]);
 
-        $repository->sort($dashboard, $request->validated());
+        $this->repository->sort($dashboard, $request->validated());
 
     }
 }

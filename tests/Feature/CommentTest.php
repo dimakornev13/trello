@@ -41,14 +41,13 @@ class CommentTest extends TestCase
             return $this->getDashboardIDForUser($query);
         })->first();
 
-        $data = ['content' => 'some text'];
-        $required = ['task' => $task->id];
+        $form_data = ['content' => 'some text'];
+        $query_params = ['task' => $task->id];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('comments.create', $required), $data);
-
-        $response->assertCreated()
-            ->assertSee($data['content']);
+        $this->actingAs($this->user, 'api')
+            ->postJson(route('comments.create', $query_params), $form_data)
+            ->assertCreated()
+            ->assertSee($form_data['content']);
     }
 
 
@@ -63,13 +62,12 @@ class CommentTest extends TestCase
             return $this->getDashboardIDForUser($query);
         })->first();
 
-        $data = ['content' => 'some text'];
-        $required = ['task' => $task->id];
+        $form_data = ['content' => 'some text'];
+        $query_params = ['task' => $task->id];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('comments.create', $required), $data);
-
-        $response->assertForbidden();
+        $this->actingAs($this->user, 'api')
+            ->postJson(route('comments.create', $query_params), $form_data)
+            ->assertForbidden();
     }
 
 
@@ -82,17 +80,15 @@ class CommentTest extends TestCase
     {
         $comment = Comment::where('owner_id', $this->user->id)->first();
 
-        $data = $comment->toArray();
-        $data['content'] = 'anoth text';
+        $form_data = $comment->toArray();
+        $form_data['content'] = 'anoth text';
 
-        $required = ['comment' => $comment->id];
+        $query_params = ['comment' => $comment->id];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('comments.update', $required), $data);
-
-        $response
+        $this->actingAs($this->user, 'api')
+            ->postJson(route('comments.update', $query_params), $form_data)
             ->assertStatus(200)
-            ->assertSee($data['content']);
+            ->assertSee($form_data['content']);
     }
 
 
@@ -105,15 +101,14 @@ class CommentTest extends TestCase
     {
         $comment = Comment::where('owner_id', '<>', $this->user->id)->first();
 
-        $data = $comment->toArray();
-        $data['content'] = 'anoth text';
+        $form_data = $comment->toArray();
+        $form_data['content'] = 'anoth text';
 
-        $required = ['comment' => $comment->id];
+        $query_params = ['comment' => $comment->id];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('comments.update', $required), $data);
-
-        $response->assertForbidden();
+        $this->actingAs($this->user, 'api')
+            ->postJson(route('comments.update', $query_params), $form_data)
+            ->assertForbidden();
     }
 
 
@@ -125,16 +120,14 @@ class CommentTest extends TestCase
     public function testUserCanDeleteComment()
     {
         $comment = Comment::where('owner_id', $this->user->id)->first();
-        $required = ['comment' => $comment->id];
+        $query_params = ['comment' => $comment->id];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->deleteJson(route('comments.delete', $required));
-
-        $response->assertStatus(200);
+        $this->actingAs($this->user, 'api')
+            ->deleteJson(route('comments.delete', $query_params))
+            ->assertStatus(200);
 
         $comment = Comment::find($comment->id);
         $this->assertEmpty($comment);
-
     }
 
 
@@ -147,12 +140,11 @@ class CommentTest extends TestCase
     {
         $comment = Comment::where('owner_id', '<>', $this->user->id)->first();
 
-        $required = ['comment' => $comment->id];
+        $query_params = ['comment' => $comment->id];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->deleteJson(route('comments.delete', $required));
-
-        $response->assertForbidden();
+        $this->actingAs($this->user, 'api')
+            ->deleteJson(route('comments.delete', $query_params))
+            ->assertForbidden();
     }
 
 

@@ -33,19 +33,17 @@ class ColumnTest extends TestCase
     /**
      * @return void
      */
-    public function testCreateSuccessfulColumnInDashboard()
+    public function test_create_successful_column_in_dashboard()
     {
-        $data = [
+        $form_data = [
             'title'        => 'some title',
             'dashboard_id' => Dashboard::where('owner_id', $this->user->id)->first()->id
         ];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('columns.store'), $data);
-
-        $response
+        $this->actingAs($this->user, 'api')
+            ->postJson(route('columns.store'), $form_data)
             ->assertCreated()
-            ->assertSee($data['title']);
+            ->assertSee($form_data['title']);
     }
 
 
@@ -54,15 +52,14 @@ class ColumnTest extends TestCase
      */
     public function testUserCanNotCreateNewColumn()
     {
-        $data = [
+        $form_data = [
             'title'        => 'some title',
             'dashboard_id' => 2
         ];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('columns.store'), $data);
-
-        $response->assertForbidden();
+        $this->actingAs($this->user, 'api')
+            ->postJson(route('columns.store'), $form_data)
+            ->assertForbidden();
     }
 
 
@@ -75,18 +72,18 @@ class ColumnTest extends TestCase
             return $this->getDashboardIDForUser($query);
         })->first();
 
-        $data = [
+        $form_data = [
             'title'        => 'some title',
             'dashboard_id' => $column->dashboard_id,
             'sort'         => 11
         ];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->putJson(route('columns.update', ['column' => $column->dashboard_id]), $data);
+        $query_params = ['column' => $column->dashboard_id];
 
-        $response
+        $this->actingAs($this->user, 'api')
+            ->putJson(route('columns.update', $query_params), $form_data)
             ->assertStatus(200)
-            ->assertSee($data['title']);
+            ->assertSee($form_data['title']);
     }
 
 
@@ -99,16 +96,17 @@ class ColumnTest extends TestCase
             return $this->getDashboardIDForUser($query);
         })->first();
 
-        $data = [
+        $form_data = [
             'title'        => 'some title',
             'dashboard_id' => $column->id,
             'sort'         => 11
         ];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->putJson(route('columns.update', ['column' => $column->id]), $data);
+        $query_params = ['column' => $column->id];
 
-        $response->assertForbidden();
+        $this->actingAs($this->user, 'api')
+            ->putJson(route('columns.update', $query_params), $form_data)
+            ->assertForbidden();
     }
 
 
@@ -118,10 +116,9 @@ class ColumnTest extends TestCase
         $column = Column::where('dashboard_id', $dashboard->id)->first();
 
 
-        $response = $this->actingAs($this->user, 'api')
-            ->deleteJson(route('columns.destroy', compact('column')));
-
-        $response->assertStatus(200);
+        $this->actingAs($this->user, 'api')
+            ->deleteJson(route('columns.destroy', compact('column')))
+            ->assertStatus(200);
     }
 
 
@@ -134,27 +131,28 @@ class ColumnTest extends TestCase
             return $this->getDashboardIDForUser($query);
         })->first();
 
-        $response = $this->actingAs($this->user, 'api')
-            ->deleteJson(route('columns.destroy', ['column' => $column->id]));
+        $query_params = ['column' => $column->id];
 
-        $response->assertForbidden();
+        $this->actingAs($this->user, 'api')
+            ->deleteJson(route('columns.destroy', $query_params))
+            ->assertForbidden();
     }
 
 
     public function testUpdateSortOfColumns()
     {
-        $this->withoutExceptionHandling();
-
         $dashboard = Dashboard::where('owner_id', $this->user->id)->first();
         $columns = Column::where('dashboard_id', $dashboard->id)
             ->get()
             ->pluck('id');
 
-        $required = ['dashboard' => $dashboard->id];
-        $data = ['set' => $columns];
+        $query_params = ['dashboard' => $dashboard->id];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('columns.sort', $required), $data);
+        $form_data = ['set' => $columns];
+
+        $this->actingAs($this->user, 'api')
+            ->postJson(route('columns.sort', $query_params), $form_data)
+            ->assertStatus(200);
 
         collect($columns)->each(function ($id, $index) {
             $column = Column::find($id);
@@ -162,7 +160,6 @@ class ColumnTest extends TestCase
             $this->assertEquals($index, $column->sort);
         });
 
-        $response->assertStatus(200);
     }
 
 

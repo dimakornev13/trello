@@ -24,20 +24,6 @@ class TaskRepository
     }
 
 
-    public function update(Task $task, array $data): Task
-    {
-        $task->update($data);
-
-        return $task;
-    }
-
-
-    public function delete(Task $task): void
-    {
-        $task->delete();
-    }
-
-
     /**
      * sort tasks inside column
      *
@@ -69,19 +55,5 @@ class TaskRepository
     private function setSort(array &$data)
     {
         $data['sort'] = Task::where('column_id', $data['column_id'])->max('sort');
-    }
-
-
-    /**
-     * move task to new column
-     *
-     * @param Column $column
-     * @param Task $task
-     */
-    public function move(Column $column, Task $task)
-    {
-        $task->update([
-            'column_id' => $column->id
-        ]);
     }
 }

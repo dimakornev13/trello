@@ -3,13 +3,10 @@
 namespace Tests\Feature;
 
 use App\Dashboard;
-use App\DashboardUser;
 use App\Services\DashboardService;
 use App\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -38,10 +35,8 @@ class DashboardTest extends TestCase
      */
     public function testUsersDashboards()
     {
-        $response = $this->actingAs($this->user, 'api')
-            ->getJson(route('dashboards.index'));
-
-        $response
+        $this->actingAs($this->user, 'api')
+            ->getJson(route('dashboards.index'))
             ->assertStatus(200)
             ->assertJsonCount(4);
     }
@@ -56,13 +51,12 @@ class DashboardTest extends TestCase
     {
         $dashboard = DashboardService::getUserDashboards($this->user)->first();
 
-        $data = ['dashboard' => $dashboard->id];
-        $response = $this->actingAs($this->user, 'api')
-            ->getJson(route('dashboards.show', $data));
+        $query_params = ['dashboard' => $dashboard->id];
 
-        $response->assertStatus(200);
-
-        $this->assertCount(count($dashboard->columns), json_decode($response->content()));
+        $this->actingAs($this->user, 'api')
+            ->getJson(route('dashboards.show', $query_params))
+            ->assertStatus(200)
+            ->assertJsonCount(count($dashboard->columns));
     }
 
 
@@ -76,24 +70,22 @@ class DashboardTest extends TestCase
         $file = UploadedFile::fake()->image('avatar.jpg')->size(200);
         $filePath = sprintf('backgrounds/%s', $file->hashName());
 
-        $data = [
+        $form_data = [
             'title'      => 'some title',
             'background' => $file
         ];
 
         $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('dashboards.store'), $data);
-
-        $response
+            ->postJson(route('dashboards.store'), $form_data)
             ->assertCreated()
-            ->assertSee($data['title'])
+            ->assertSee($form_data['title'])
             ->assertSee(str_replace('/', '\/', $filePath));
 
         Storage::disk('public')->assertExists($filePath);
 
         $dashboard = Dashboard::find($response['id']);
 
-        $this->assertEquals('/storage/'.$filePath, $dashboard->background);
+        $this->assertEquals('/storage/' . $filePath, $dashboard->background);
     }
 
 
@@ -106,15 +98,13 @@ class DashboardTest extends TestCase
 
         $file = UploadedFile::fake()->image('avatar.jpg')->size(4096);
 
-        $data = [
+        $form_data = [
             //'title' => 'some title',
             'background' => $file
         ];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('dashboards.store'), $data);
-
-        $response
+        $this->actingAs($this->user, 'api')
+            ->postJson(route('dashboards.store'), $form_data)
             ->assertJsonStructure([
                 'message',
                 'errors' => ['title', 'background']
@@ -127,7 +117,6 @@ class DashboardTest extends TestCase
      */
     public function testUpdateSuccessDashboard()
     {
-        $this->withoutExceptionHandling();
         $user = User::find(1);
 
         Storage::fake('public');
@@ -135,17 +124,17 @@ class DashboardTest extends TestCase
         $file = UploadedFile::fake()->image('avatar.jpg')->size(200);
         $filePath = sprintf('backgrounds/%s', $file->hashName());
 
-        $data = [
+        $form_data = [
             'title'      => 'another title',
             'background' => $file
         ];
 
-        $response = $this->actingAs($user, 'api')
-            ->putJson(route('dashboards.update', ['dashboard' => 1]), $data);
+        $query_params = ['dashboard' => 1];
 
-        $response
+        $response = $this->actingAs($user, 'api')
+            ->putJson(route('dashboards.update', $query_params), $form_data)
             ->assertStatus(200)
-            ->assertSee($data['title'])
+            ->assertSee($form_data['title'])
             ->assertSee(str_replace('/', '\/', $filePath));
 
         $this->assertCount(3, $user->dashboards);
@@ -154,7 +143,7 @@ class DashboardTest extends TestCase
 
         $dashboard = Dashboard::find($response['id']);
 
-        $this->assertEquals('/storage/'.$filePath, $dashboard->background);
+        $this->assertEquals('/storage/' . $filePath, $dashboard->background);
     }
 
 
@@ -168,16 +157,16 @@ class DashboardTest extends TestCase
         $dashboard = Dashboard::where('owner_id', '<>', $this->user->id)->first();
         $file = UploadedFile::fake()->image('avatar.jpg')->size(200);
 
-        $data = [
+        $form_data = [
             'title'      => 'another title',
             'background' => $file
         ];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->putJson(route('dashboards.update', ['dashboard' => $dashboard->id]), $data);
+        $query_params = ['dashboard' => $dashboard->id];
 
-        $response->assertForbidden();
-
+        $this->actingAs($this->user, 'api')
+            ->putJson(route('dashboards.update', $query_params), $form_data)
+            ->assertForbidden();
     }
 
 
@@ -185,11 +174,11 @@ class DashboardTest extends TestCase
     {
         $dashboard = Dashboard::find(2);
 
-        $response = $this->actingAs($this->user, 'api')
-            ->getJson(route('dashboards.show', ['dashboard' => $dashboard->id]));
+        $query_params = ['dashboard' => $dashboard->id];
 
-        $response->assertForbidden();
-
+        $this->actingAs($this->user, 'api')
+            ->getJson(route('dashboards.show', $query_params))
+            ->assertForbidden();
     }
 
 
@@ -197,10 +186,9 @@ class DashboardTest extends TestCase
     {
         $dashboard = Dashboard::where('owner_id', $this->user->id)->first();
 
-        $response = $this->actingAs($this->user, 'api')
-            ->deleteJson(route('dashboards.destroy', ['dashboard' => $dashboard->id]));
-
-        $response->assertStatus(200);
+        $this->actingAs($this->user, 'api')
+            ->deleteJson(route('dashboards.destroy', ['dashboard' => $dashboard->id]))
+            ->assertStatus(200);
 
         $this->assertEquals(false, Dashboard::where('id', $dashboard->id)->exists());
     }
@@ -210,10 +198,11 @@ class DashboardTest extends TestCase
     {
         $dashboard = Dashboard::where('owner_id', '<>', $this->user->id)->first();
 
-        $response = $this->actingAs($this->user, 'api')
-            ->deleteJson(route('dashboards.destroy', ['dashboard' => $dashboard->id]));
+        $query_params = ['dashboard' => $dashboard->id];
 
-        $response->assertForbidden();
+        $this->actingAs($this->user, 'api')
+            ->deleteJson(route('dashboards.destroy', $query_params))
+            ->assertForbidden();
     }
 }
 

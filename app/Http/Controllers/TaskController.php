@@ -8,15 +8,18 @@ use App\Http\Requests\SortTasks;
 use App\Http\Requests\StoreAndUpdateTask;
 use App\Repositories\TaskRepository;
 use App\Task;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
 
-    public function __construct()
+    private $repository;
+
+    public function __construct(TaskRepository $repository)
     {
         $this->authorizeResource(Task::class, 'task');
+
+        $this->repository = $repository;
     }
 
 
@@ -24,13 +27,12 @@ class TaskController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreAndUpdateTask $request
-     * @param TaskRepository $repository
      *
      * @return Task
      */
-    public function store(StoreAndUpdateTask $request, TaskRepository $repository)
+    public function store(StoreAndUpdateTask $request)
     {
-        return $repository->store($request->validated());
+        return $this->repository->store($request->validated());
     }
 
 
@@ -52,13 +54,14 @@ class TaskController extends Controller
      *
      * @param StoreAndUpdateTask $request
      * @param Task $task
-     * @param TaskRepository $repository
      *
      * @return Task
      */
-    public function update(StoreAndUpdateTask $request, Task $task, TaskRepository $repository)
+    public function update(StoreAndUpdateTask $request, Task $task)
     {
-        return $repository->update($task, $request->validated());
+        $task->update($request->validated());
+
+        return $task;
     }
 
 
@@ -66,11 +69,12 @@ class TaskController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Task $task
-     * @param TaskRepository $repository
+     *
+     * @throws \Exception
      */
-    public function destroy(Task $task, TaskRepository $repository)
+    public function destroy(Task $task)
     {
-        $repository->delete($task);
+        $task->delete();
     }
 
 

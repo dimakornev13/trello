@@ -36,19 +36,17 @@ class TaskTest extends TestCase
         $dashboard = Dashboard::where('owner_id', $this->user->id)->first();
         $column = Column::where('dashboard_id', $dashboard->id)->first();
 
-        $data = [
+        $form_data = [
             'column_id'    => $column->id,
             'title'        => 'some text',
             'description'  => 'some text',
             'dashboard_id' => $dashboard->id
         ];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('tasks.store'), $data);
-
-        $response
+        $this->actingAs($this->user, 'api')
+            ->postJson(route('tasks.store'), $form_data)
             ->assertCreated()
-            ->assertSee($data['title']);
+            ->assertSee($form_data['title']);
     }
 
 
@@ -57,15 +55,13 @@ class TaskTest extends TestCase
         $dashboard = Dashboard::where('owner_id', $this->user->id)->first();
         $column = Column::where('dashboard_id', $dashboard->id)->first();
 
-        $data = [
+        $form_data = [
             'description'  => 'some text',
             'dashboard_id' => $dashboard->id
         ];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('tasks.store'), $data);
-
-        $response
+        $this->actingAs($this->user, 'api')
+            ->postJson(route('tasks.store'), $form_data)
             ->assertJsonValidationErrors(['title', 'column_id']);
     }
 
@@ -75,15 +71,15 @@ class TaskTest extends TestCase
         $dashboard = Dashboard::where('owner_id', $this->user->id)->firstOrFail();
         $task = Task::where('dashboard_id', $dashboard->id)->firstOrFail();
 
-        $data = $task->toArray();
-        $data['title'] = 'some text';
+        $form_data = $task->toArray();
+        $form_data['title'] = 'some text';
 
-        $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('tasks.update', ['task' => $task->id]), $data);
+        $query_params = ['task' => $task->id];
 
-        $response
+        $this->actingAs($this->user, 'api')
+            ->postJson(route('tasks.update', $query_params), $form_data)
             ->assertStatus(200)
-            ->assertSee($data['title']);
+            ->assertSee($form_data['title']);
     }
 
 
@@ -93,13 +89,14 @@ class TaskTest extends TestCase
             return $this->getDashboardIDForUser($query);
         })->first();
 
-        $data = $task->toArray();
-        $data['title'] = 'some text';
+        $form_data = $task->toArray();
+        $form_data['title'] = 'some text';
 
-        $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('tasks.update', ['task' => $task->id]), $data);
+        $query_params = ['task' => $task->id];
 
-        $response->assertForbidden();
+        $this->actingAs($this->user, 'api')
+            ->postJson(route('tasks.update', $query_params), $form_data)
+            ->assertForbidden();
     }
 
 
@@ -109,10 +106,10 @@ class TaskTest extends TestCase
             return $this->getDashboardIDForUser($query);
         })->first();
 
-        $response = $this->actingAs($this->user, 'api')
-            ->deleteJson(route('tasks.destroy', ['task' => $task->id]));
+        $query_params = ['task' => $task->id];
 
-        $response
+        $this->actingAs($this->user, 'api')
+            ->deleteJson(route('tasks.destroy', $query_params))
             ->assertStatus(200);
     }
 
@@ -123,10 +120,10 @@ class TaskTest extends TestCase
             return $this->getDashboardIDForUser($query);
         })->first();
 
-        $response = $this->actingAs($this->user, 'api')
-            ->deleteJson(route('tasks.destroy', ['task' => $task->id]));
+        $query_params = ['task' => $task->id];
 
-        $response
+        $this->actingAs($this->user, 'api')
+            ->deleteJson(route('tasks.destroy', $query_params))
             ->assertForbidden();
     }
 
@@ -139,23 +136,21 @@ class TaskTest extends TestCase
             return $this->getDashboardIDForUser($query);
         })->first();
 
-        $required = ['column' => $column->id];
-        $data = [
+        $query_params = ['column' => $column->id];
+        $form_data = [
             'set' => Task::where('column_id', $column->id)->get()->pluck('id')->toArray()
         ];
 
-        $response = $this->actingAs($this->user, 'api')
-            ->postJson(route('tasks.sort', $required), $data);
+        $this->actingAs($this->user, 'api')
+            ->postJson(route('tasks.sort', $query_params), $form_data)
+            ->assertStatus(200);
 
         Task::where('column_id', $column->id)
-            ->each(function ($task) use ($data) {
-                $expected = array_search($task->id, $data['set']);
+            ->each(function ($task) use ($form_data) {
+                $expected = array_search($task->id, $form_data['set']);
 
                 $this->assertEquals($expected, $task->sort);
             });
-
-        $response
-            ->assertStatus(200);
     }
 
 

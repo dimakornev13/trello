@@ -39,21 +39,6 @@ class ColumnRepository
         $this->data['sort'] = Column::where('dashboard_id', $this->data['dashboard_id'])->max('sort');
     }
 
-
-    public function update(Column $column, array $data)
-    {
-        $column->update($data);
-
-        return $column;
-    }
-
-
-    public function delete(Column $column)
-    {
-        $column->delete();
-    }
-
-
     /**
      * update sort field for columns from one dashboard just
      *
