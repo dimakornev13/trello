@@ -22,7 +22,7 @@ Hot reloading was made just for tasks sorting.
 
 ## Login into different browsers like:
 ```
-user-2@none.com
+user-1@none.com
 test
 
 user-2@none.com
