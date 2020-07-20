@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b4c522d381aa21bea0a5d136e5766255",
+    "content-hash": "c813a426d2c0675a00441c936ded0067",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5540,16 +5540,16 @@
         },
         {
             "name": "laravel/homestead",
-            "version": "v10.8.0",
+            "version": "v10.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/homestead.git",
-                "reference": "4e4b5b92d8192ccdbdeac826be88a9bfdfde99d0"
+                "reference": "ea76d795e0518b534b9244160b9a96dffe517cbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/homestead/zipball/4e4b5b92d8192ccdbdeac826be88a9bfdfde99d0",
-                "reference": "4e4b5b92d8192ccdbdeac826be88a9bfdfde99d0",
+                "url": "https://api.github.com/repos/laravel/homestead/zipball/ea76d795e0518b534b9244160b9a96dffe517cbe",
+                "reference": "ea76d795e0518b534b9244160b9a96dffe517cbe",
                 "shasum": ""
             },
             "require": {
@@ -5581,7 +5581,7 @@
                 }
             ],
             "description": "A virtual machine for web artisans.",
-            "time": "2020-04-26T23:51:08+00:00"
+            "time": "2020-07-01T00:16:34+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -7319,6 +7319,5 @@
     "platform": {
         "php": "^7.2.5"
     },
-    "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "platform-dev": []
 }

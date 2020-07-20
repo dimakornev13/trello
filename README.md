@@ -6,7 +6,7 @@ Hot reloading was made just for tasks sorting.
 1. vagrant up
 2. vagrant ssh
 3. cd code
-4. npm install
+4. npm install && npm run dev (or yarn install because strange bug happens sometimes)
 5. composer install
 6. art migrate --seed
 
@@ -18,6 +18,7 @@ Hot reloading was made just for tasks sorting.
 
 11. art test (in the first terminal)
 12. add trello-copy.my to hosts file
+13. change path to your project's folder in the Homestead.yaml
 ```
 
 ## Login into different browsers like:

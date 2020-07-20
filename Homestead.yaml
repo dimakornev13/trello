@@ -7,7 +7,7 @@ keys:
     - ~/.ssh/id_rsa
 folders:
     -
-        map: /home/ema/www/sites/trello
+        map: /home/ema/www/files/trello
         to: /home/vagrant/code
 sites:
     -
@@ -21,7 +21,7 @@ features:
     -
         ohmyzsh: false
     -
-        webdriver: true
+        webdriver: false
 name: trello
 hostname: trello
 backup: true
